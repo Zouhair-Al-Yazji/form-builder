@@ -34,13 +34,24 @@ export const FIELD_CONFIG: Record<
   password: { label: "Password Input", icon: IconLock },
 };
 
-type FormField = {
+type FormOption = {
+  label: string;
+  value: string;
+};
+
+type FieldWidthType = "full" | "half" | "third";
+
+export type FormField = {
   id: string;
   type: FieldType;
   label: string;
+  name: string;
   placeHolder?: string;
   required: boolean;
+  disabled: boolean;
   validationRegex?: string;
+  options?: FormOption[];
+  width: FieldWidthType;
   visibilityCondition: {
     dependsOnFieldId: string;
     equalsValue: string;
@@ -54,6 +65,7 @@ type FormContextType = {
   removeField: (fieldId: string) => void;
   goUp: (fieldId: string) => void;
   goDown: (fieldId: string) => void;
+  clear: () => void;
 };
 
 const FormContext = createContext<FormContextType | undefined>(undefined);
@@ -103,9 +115,21 @@ export function FormProvider({ children }: { children: ReactNode }) {
     });
   }
 
+  function clear() {
+    setFields([]);
+  }
+
   return (
     <FormContext
-      value={{ fields, removeField, addField, updateField, goUp, goDown }}
+      value={{
+        fields,
+        removeField,
+        addField,
+        updateField,
+        goUp,
+        goDown,
+        clear,
+      }}
     >
       {children}
     </FormContext>

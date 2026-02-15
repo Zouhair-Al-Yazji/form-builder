@@ -10,6 +10,9 @@ export function ControlPanel() {
       id: crypto.randomUUID(),
       label: config.label,
       required: false,
+      disabled: false,
+      width: "full",
+      name: `${type}-${crypto.randomUUID().slice(0, 5)}`,
       type,
       placeHolder: `Enter ${config.label.toLocaleLowerCase()}...`,
       visibilityCondition: {
