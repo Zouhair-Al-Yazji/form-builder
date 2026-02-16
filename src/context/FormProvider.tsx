@@ -1,10 +1,4 @@
-import {
-  createContext,
-  use,
-  useState,
-  type ElementType,
-  type ReactNode,
-} from "react";
+import { createContext, use, type ElementType, type ReactNode } from "react";
 import {
   IconAlphabetLatin,
   IconNumbers,
@@ -13,6 +7,7 @@ import {
   IconMail,
   IconLock,
 } from "@tabler/icons-react";
+import { useLocalStorage } from "../hooks/useLocalStorage";
 
 export type FieldType =
   | "text"
@@ -66,12 +61,13 @@ type FormContextType = {
   goUp: (fieldId: string) => void;
   goDown: (fieldId: string) => void;
   clear: () => void;
+  duplicateField: (fieldId: string) => void;
 };
 
 const FormContext = createContext<FormContextType | undefined>(undefined);
 
 export function FormProvider({ children }: { children: ReactNode }) {
-  const [fields, setFields] = useState<FormField[]>([]);
+  const [fields, setFields] = useLocalStorage<FormField[]>("fields", []);
 
   function addField(field: FormField) {
     setFields((prev) => [...prev, field]);
@@ -119,6 +115,22 @@ export function FormProvider({ children }: { children: ReactNode }) {
     setFields([]);
   }
 
+  function duplicateField(fieldId: string) {
+    setFields((prev) => {
+      const index = prev.findIndex((field) => field.id === fieldId);
+
+      const duplicatedField = {
+        ...prev[index],
+        id: crypto.randomUUID(),
+        name: `${prev[index].type}-${crypto.randomUUID().slice(0, 5)}`,
+      };
+
+      const newFields = [...prev];
+      newFields.splice(index + 1, 0, duplicatedField);
+      return newFields;
+    });
+  }
+
   return (
     <FormContext
       value={{
@@ -129,6 +141,7 @@ export function FormProvider({ children }: { children: ReactNode }) {
         goUp,
         goDown,
         clear,
+        duplicateField,
       }}
     >
       {children}

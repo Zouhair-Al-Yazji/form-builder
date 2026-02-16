@@ -6,6 +6,7 @@ import {
 import {
   IconChevronDown,
   IconChevronUp,
+  IconCopy,
   IconPencil,
   IconPlus,
   IconTrash,
@@ -20,7 +21,8 @@ type SettingsPanelFieldProps = {
 
 export default function SettingsPanelField({ field }: SettingsPanelFieldProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const { removeField, goDown, goUp, updateField } = useFormProvider();
+  const { removeField, goDown, goUp, updateField, duplicateField } =
+    useFormProvider();
   const { register, handleSubmit, reset, watch, setValue, control } =
     useForm<FormField>({
       defaultValues: field,
@@ -45,6 +47,13 @@ export default function SettingsPanelField({ field }: SettingsPanelFieldProps) {
     <div className="flex items-center gap-3 bg-slate-50/20 p-2 rounded-lg border border-slate-100/20 hover:bg-blue-50/30 hover:border-slate-100/50 hover:text-blue-200 transition-all">
       <p className="flex-1">{field.label || field.name}</p>
 
+      <button
+        onClick={() => duplicateField(field.id)}
+        className="cursor-pointer group"
+      >
+        <IconCopy className="size-5" title="Duplicate Field" />
+      </button>
+
       <Drawer.Root
         open={isOpen}
         onOpenChange={(open) => {
@@ -55,7 +64,7 @@ export default function SettingsPanelField({ field }: SettingsPanelFieldProps) {
         }}
         swipeDirection="right"
       >
-        <Drawer.Trigger className="cursor-pointer group">
+        <Drawer.Trigger title="Edit Field" className="cursor-pointer group">
           <IconPencil className="size-5 group-hover:stroke-yellow-200" />
         </Drawer.Trigger>
 
@@ -275,6 +284,7 @@ export default function SettingsPanelField({ field }: SettingsPanelFieldProps) {
       </Drawer.Root>
 
       <button
+        title="Delete Field"
         onClick={() => removeField(field.id)}
         className="cursor-pointer group"
       >
