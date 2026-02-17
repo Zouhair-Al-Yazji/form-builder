@@ -12,8 +12,11 @@ export function ControlPanel() {
       required: false,
       disabled: false,
       width: "full",
-      name: `${type}-${crypto.randomUUID().slice(0, 5)}`,
+      name: config.isDisplayOnly
+        ? undefined
+        : `${type}-${crypto.randomUUID().slice(0, 5)}`,
       type,
+      heading: type === "heading" ? "h1" : undefined,
       placeHolder: `Enter ${config.label.toLocaleLowerCase()}...`,
       visibilityCondition: {
         dependsOnFieldId: "",

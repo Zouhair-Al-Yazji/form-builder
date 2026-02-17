@@ -24,6 +24,15 @@ export function RenderField({ field, registerProps, error }: RenderFieldProps) {
         ? "col-span-3"
         : "col-span-2";
 
+  const calculateHeadingSize = () =>
+    field.heading === "h1"
+      ? "text-2xl"
+      : field.heading === "h2"
+        ? "text-xl"
+        : field.heading === "h3"
+          ? "text-lg"
+          : "text-sm";
+
   switch (field.type) {
     case "select":
       return (
@@ -76,6 +85,28 @@ export function RenderField({ field, registerProps, error }: RenderFieldProps) {
                 : `${field.label || "This field"} is required`}
             </span>
           )}
+        </div>
+      );
+    case "separator":
+      return (
+        <div className="relative flex items-center py-2 col-span-6">
+          <div className="grow border-t border-b-blue-100"></div>
+          {field.label && (
+            <span className="shrink mx-2 text-sm font-bold uppercase tracking-widest">
+              {field.label}
+            </span>
+          )}
+          <div className="grow border-t border-b-blue-100"></div>
+        </div>
+      );
+    case "heading":
+      return (
+        <div className={`${calculateWidth()} pt-4 pb-2`}>
+          <h2
+            className={`${field.heading !== "p" ? "font-bold " : "font-medium"}w-fit ${calculateHeadingSize()}`}
+          >
+            {field.label}
+          </h2>
         </div>
       );
     default:

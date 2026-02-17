@@ -26,22 +26,30 @@ export function Canvas() {
         className="grid grid-cols-6 gap-4 items-center"
         onSubmit={handleSubmit(onSubmit)}
       >
-        {fields.map((field) => (
-          <RenderField
-            key={field.id}
-            field={field}
-            registerProps={register(field.name, {
-              required: field.required,
-              pattern: field.validationRegex
-                ? {
-                    value: new RegExp(field.validationRegex),
-                    message: `The format for ${field.label || field.name} is invalid`,
-                  }
-                : undefined,
-            })}
-            error={errors[field.name]}
-          />
-        ))}
+        {fields.map((field) => {
+          const isDisplay = ["separator", "heading"].includes(field.type);
+
+          return (
+            <RenderField
+              key={field.id}
+              field={field}
+              registerProps={
+                isDisplay
+                  ? undefined
+                  : register(field.name, {
+                      required: field.required,
+                      pattern: field.validationRegex
+                        ? {
+                            value: new RegExp(field.validationRegex),
+                            message: `The format for ${field.label || field.name} is invalid`,
+                          }
+                        : undefined,
+                    })
+              }
+              error={errors[field.name]}
+            />
+          );
+        })}
 
         <Activity mode={fields.length > 0 ? "visible" : "hidden"}>
           <div className="flex items-center justify-end gap-2 col-span-6">
