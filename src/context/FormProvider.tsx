@@ -1,100 +1,9 @@
-import {
-  createContext,
-  use,
-  type ElementType,
-  type ReactElement,
-  type ReactNode,
-} from "react";
-import {
-  IconAlphabetLatin,
-  IconNumbers,
-  IconChevronDown,
-  IconCheckbox,
-  IconMail,
-  IconLock,
-  IconSeparatorHorizontal,
-  IconHeading,
-  IconH1,
-  IconH2,
-  IconH3,
-  IconPilcrow,
-} from "@tabler/icons-react";
+import { createContext, use, type ReactNode } from "react";
+
 import { useLocalStorage } from "../hooks/useLocalStorage";
+import type { FormField } from "../types/types";
 
-export type FieldType =
-  | "text"
-  | "number"
-  | "select"
-  | "checkbox"
-  | "email"
-  | "password"
-  | "separator"
-  | "heading";
-
-export const FIELD_CONFIG: Record<
-  FieldType,
-  { label: string; icon: ElementType; isDisplayOnly?: boolean }
-> = {
-  text: { label: "Text Input", icon: IconAlphabetLatin },
-  number: { label: "Number Input", icon: IconNumbers },
-  select: { label: "Dropdown Menu", icon: IconChevronDown },
-  checkbox: { label: "Checkbox", icon: IconCheckbox },
-  email: { label: "Email Input", icon: IconMail },
-  password: { label: "Password Input", icon: IconLock },
-  separator: {
-    label: "Separator",
-    icon: IconSeparatorHorizontal,
-    isDisplayOnly: true,
-  },
-  heading: {
-    label: "Heading",
-    icon: IconHeading,
-    isDisplayOnly: true,
-  },
-};
-
-type FormOption = {
-  label: string;
-  value: string;
-};
-
-export type FieldWidthType = "full" | "half" | "third";
-
-export type HeadingTags = "h1" | "h2" | "h3" | "p";
-
-export const FIELD_HEADING_CONFIG: Record<
-  HeadingTags,
-  { icon: ElementType; title: string }
-> = {
-  h1: { icon: IconH1, title: "Header 1" },
-  h2: { icon: IconH2, title: "Header 2" },
-  h3: { icon: IconH3, title: "Header 3" },
-  p: { icon: IconPilcrow, title: "Paragraph" },
-};
-
-export const FIELD_WIDTH_CONFIG: Record<FieldWidthType, string> = {
-  full: "Full Width",
-  half: "Half Width",
-  third: "Third Width",
-};
-
-export type FormField = {
-  id: string;
-  type: FieldType;
-  label: string;
-  name?: string;
-  placeHolder?: string;
-  required: boolean;
-  disabled: boolean;
-  validationRegex?: string;
-  width: FieldWidthType;
-  options?: FormOption[];
-  heading?: HeadingTags;
-  visibilityCondition: {
-    dependsOnFieldId: string;
-    equalsValue: string;
-  };
-};
+type Submission = Record<string, any>;
 
 type FormContextType = {
   fields: FormField[];
@@ -103,14 +12,21 @@ type FormContextType = {
   removeField: (fieldId: string) => void;
   goUp: (fieldId: string) => void;
   goDown: (fieldId: string) => void;
-  clear: () => void;
+  clearFields: () => void;
   duplicateField: (fieldId: string) => void;
+  submissions: Submission[];
+  addSubmission: (data: Submission) => void;
+  clearSubmissions: () => void;
 };
 
 const FormContext = createContext<FormContextType | undefined>(undefined);
 
 export function FormProvider({ children }: { children: ReactNode }) {
   const [fields, setFields] = useLocalStorage<FormField[]>("fields", []);
+  const [submissions, setSubmissions] = useLocalStorage<Submission[]>(
+    "submissions",
+    [],
+  );
 
   function addField(field: FormField) {
     setFields((prev) => [...prev, field]);
@@ -154,7 +70,7 @@ export function FormProvider({ children }: { children: ReactNode }) {
     });
   }
 
-  function clear() {
+  function clearFields() {
     setFields([]);
   }
 
@@ -174,6 +90,14 @@ export function FormProvider({ children }: { children: ReactNode }) {
     });
   }
 
+  function addSubmission(data: Submission) {
+    setSubmissions((prev) => [data, ...prev]);
+  }
+
+  function clearSubmissions() {
+    setSubmissions([]);
+  }
+
   return (
     <FormContext
       value={{
@@ -183,8 +107,11 @@ export function FormProvider({ children }: { children: ReactNode }) {
         updateField,
         goUp,
         goDown,
-        clear,
+        clearFields,
         duplicateField,
+        submissions,
+        addSubmission,
+        clearSubmissions,
       }}
     >
       {children}

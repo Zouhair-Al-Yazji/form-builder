@@ -6,7 +6,7 @@ import { IconEdit, IconSend } from "@tabler/icons-react";
 type Tap = "edit" | "submission";
 
 export function SettingsPanel() {
-  const { fields, clear } = useForm();
+  const { fields, clearFields, submissions, clearSubmissions } = useForm();
   const [activeTap, setActiveTap] = useState<Tap>("edit");
 
   return (
@@ -28,12 +28,38 @@ export function SettingsPanel() {
           className={`${activeTap === "submission" && "bg-[#555]"} flex-1 flex items-center justify-center gap-1 px-3 py-2 cursor-pointer text-sm font-medium`}
         >
           <IconSend className="size-5" />
-          Submission
+          Submissions
         </button>
       </div>
 
       <Activity mode={activeTap === "submission" ? "visible" : "hidden"}>
-        <code>submission</code>
+        <div className="flex flex-col gap-4">
+          {submissions.length === 0 ? (
+            <p className="text-sm text-gray-400 italic">No submissions yet.</p>
+          ) : (
+            <>
+              <button
+                onClick={clearSubmissions}
+                className="mb-2 w-fit text-xs cursor-pointer text-red-400 hover:text-red-300 transition-colors"
+              >
+                Clear Submission History
+              </button>
+              {submissions.map((submission, index) => (
+                <div
+                  key={index}
+                  className="bg-[#1e1e1e] p-3 rounded-lg border border-slate-700"
+                >
+                  <p className="text-xs text-blue-400 mb-2 font-mono">
+                    Submission #{submissions.length - index}
+                  </p>
+                  <pre className="text-xs overflow-x-auto text-green-400">
+                    {JSON.stringify(submission, null, 2)}
+                  </pre>
+                </div>
+              ))}
+            </>
+          )}
+        </div>
       </Activity>
 
       <Activity mode={activeTap === "edit" ? "visible" : "hidden"}>
@@ -45,7 +71,7 @@ export function SettingsPanel() {
 
         <Activity mode={fields.length > 0 ? "visible" : "hidden"}>
           <button
-            onClick={clear}
+            onClick={clearFields}
             className="transition-colors text-sm font-medium cursor-pointer bg-[#444] hover:bg-[#555] rounded px-5 py-2"
           >
             Remove All

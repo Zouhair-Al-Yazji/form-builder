@@ -4,11 +4,11 @@ import type {
   Merge,
   UseFormRegisterReturn,
 } from "react-hook-form";
-import type { FormField } from "../context/FormProvider";
+import type { FormField } from "../types/types";
 
 type RenderFieldProps = {
   field: FormField;
-  registerProps: UseFormRegisterReturn;
+  registerProps?: UseFormRegisterReturn;
   error?: FieldError | Merge<FieldError, FieldErrorsImpl<any>>;
 };
 

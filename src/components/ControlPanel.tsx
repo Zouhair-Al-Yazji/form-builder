@@ -1,4 +1,5 @@
-import { FIELD_CONFIG, useForm, type FieldType } from "../context/FormProvider";
+import { useForm } from "../context/FormProvider";
+import { FIELD_CONFIG, type FieldType } from "../types/types";
 
 export function ControlPanel() {
   const { addField } = useForm();
@@ -12,9 +13,7 @@ export function ControlPanel() {
       required: false,
       disabled: false,
       width: "full",
-      name: config.isDisplayOnly
-        ? undefined
-        : `${type}-${crypto.randomUUID().slice(0, 5)}`,
+      name: `${type}-${crypto.randomUUID().slice(0, 5)}`,
       type,
       heading: type === "heading" ? "h1" : undefined,
       placeHolder: `Enter ${config.label.toLocaleLowerCase()}...`,

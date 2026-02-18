@@ -1,12 +1,4 @@
-import {
-  FIELD_CONFIG,
-  FIELD_HEADING_CONFIG,
-  FIELD_WIDTH_CONFIG,
-  useForm as useFormProvider,
-  type FieldWidthType,
-  type FormField,
-  type HeadingTags,
-} from "../context/FormProvider";
+import { useForm as useFormProvider } from "../context/FormProvider";
 import {
   IconChevronDown,
   IconChevronUp,
@@ -18,6 +10,14 @@ import {
 import { DrawerPreview as Drawer } from "@base-ui/react/drawer";
 import { useFieldArray, useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
+import {
+  FIELD_CONFIG,
+  FIELD_HEADING_CONFIG,
+  FIELD_WIDTH_CONFIG,
+  type FieldWidthType,
+  type FormField,
+  type HeadingTags,
+} from "../types/types";
 
 type SettingsPanelFieldProps = {
   field: FormField;

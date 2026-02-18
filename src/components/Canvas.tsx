@@ -4,7 +4,7 @@ import { useForm as useFormProvider } from "../context/FormProvider";
 import { RenderField } from "./RenderField";
 
 export function Canvas() {
-  const { fields } = useFormProvider();
+  const { fields, addSubmission } = useFormProvider();
   const {
     register,
     handleSubmit,
@@ -15,7 +15,9 @@ export function Canvas() {
   });
 
   function onSubmit(data: any) {
-    alert(`Form Submitted ${JSON.stringify(data)}`);
+    addSubmission(data);
+    alert("Form Submitted and saved to settings!");
+    reset();
   }
 
   return (
@@ -31,12 +33,12 @@ export function Canvas() {
 
           return (
             <RenderField
-              key={field.id}
+              key={`${field.id}-${field.name}`}
               field={field}
               registerProps={
                 isDisplay
                   ? undefined
-                  : register(field.name, {
+                  : register(field.name as string, {
                       required: field.required,
                       pattern: field.validationRegex
                         ? {
@@ -46,7 +48,7 @@ export function Canvas() {
                         : undefined,
                     })
               }
-              error={errors[field.name]}
+              error={field.name ? errors[field.name] : undefined}
             />
           );
         })}
