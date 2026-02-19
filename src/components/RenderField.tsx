@@ -44,7 +44,7 @@ export function RenderField({ field, registerProps, error }: RenderFieldProps) {
           <select
             disabled={field.disabled}
             id={field.id}
-            className={`${borderStyle} ${commonStyles}`}
+            className={`${borderStyle} ${commonStyles} rounded-md w-full border border-transparent bg-[#444] px-3 py-2 text-sm outline-none focus:border-blue-500`}
             {...registerProps}
           >
             {field.options?.map((opt, index) => (

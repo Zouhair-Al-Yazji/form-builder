@@ -25,7 +25,7 @@ type SettingsPanelFieldProps = {
 
 export default function SettingsPanelField({ field }: SettingsPanelFieldProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const { removeField, goDown, goUp, updateField, duplicateField } =
+  const { removeField, goDown, goUp, updateField, duplicateField, fields } =
     useFormProvider();
   const { register, handleSubmit, reset, watch, setValue, control } =
     useForm<FormField>({
@@ -45,6 +45,56 @@ export default function SettingsPanelField({ field }: SettingsPanelFieldProps) {
   function onSubmit(data: FormField) {
     updateField(data);
     setIsOpen(false);
+  }
+
+  const selectedDependencyId = watch("visibilityCondition.dependsOnFieldId");
+  const dependencyField = fields.find((f) => f.id === selectedDependencyId);
+
+  function renderValueInput() {
+    if (!dependencyField)
+      return (
+        <input
+          disabled
+          placeholder="Select a field first"
+          className="rounded-md w-full bg-[#242424]/40 px-3 py-2 text-sm outline-none opacity-50 cursor-not-allowed"
+        />
+      );
+
+    if (dependencyField.type === "select") {
+      return (
+        <select
+          className="rounded-md w-full border border-transparent bg-[#242424]/70 px-3 py-2 text-sm outline-none focus:border transition-all duration-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
+          {...register("visibilityCondition.equalsValue")}
+        >
+          <option value="">Select an option...</option>
+          {dependencyField.options?.map((opt) => (
+            <option key={opt.value} value={opt.value}>
+              {opt.label}
+            </option>
+          ))}
+        </select>
+      );
+    }
+
+    if (dependencyField.type === "checkbox") {
+      return (
+        <select
+          className="rounded-md w-full border border-transparent bg-[#242424]/70 px-3 py-2 text-sm outline-none focus:border transition-all duration-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
+          {...register("visibilityCondition.equalsValue")}
+        >
+          <option value="true">Checked (True)</option>
+          <option value="false">Unchecked (False)</option>
+        </select>
+      );
+    }
+
+    return (
+      <input
+        type={dependencyField.type}
+        className="rounded-md w-full border border-transparent bg-[#242424]/70 px-3 py-2 text-sm outline-none focus:border transition-all duration-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
+        {...register("visibilityCondition.equalsValue")}
+      />
+    );
   }
 
   return (
@@ -167,6 +217,61 @@ export default function SettingsPanelField({ field }: SettingsPanelFieldProps) {
                         />
                       </div>
 
+                      <div className="col-span-2 border-t border-gray-700 pt-4 mt-2">
+                        <div className="flex items-center justify-between">
+                          <label className="text-sm font-medium text-blue-400">
+                            Conditional Logic
+                          </label>
+
+                          {(watch("visibilityCondition.dependsOnFieldId") ||
+                            watch("visibilityCondition.equalsValue")) && (
+                            <button
+                              type="button"
+                              className="text-xs bg-red-500/10 hover:bg-red-500/20 text-red-400 px-2 py-0.5 rounded transition-colors cursor-pointer"
+                              onClick={() => {
+                                setValue(
+                                  "visibilityCondition.dependsOnFieldId",
+                                  "",
+                                );
+                                setValue("visibilityCondition.equalsValue", "");
+                              }}
+                            >
+                              Clear Logic
+                            </button>
+                          )}
+                        </div>
+
+                        <div className="grid grid-cols-2 gap-4 mt-2">
+                          <div className="flex flex-col gap-1">
+                            <label className="text-sm">Show if field...</label>
+                            <select
+                              {...register(
+                                "visibilityCondition.dependsOnFieldId",
+                              )}
+                              className="rounded-md w-full border border-transparent bg-[#242424]/70 px-3 py-2 text-sm outline-none focus:border transition-all duration-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
+                            >
+                              <option value="">(None)</option>
+                              {fields
+                                .filter(
+                                  (f) =>
+                                    f.id !== field.id &&
+                                    !["separator", "heading"].includes(f.type),
+                                )
+                                .map((f) => (
+                                  <option key={f.id} value={f.id}>
+                                    {f.label || f.name}
+                                  </option>
+                                ))}
+                            </select>
+                          </div>
+
+                          <div className="flex flex-col gap-1">
+                            <label className="text-sm">Equals value...</label>
+                            {renderValueInput()}
+                          </div>
+                        </div>
+                      </div>
+
                       {watch("type") === "select" ||
                       watch("type") === "checkbox" ? null : (
                         <div className="col-span-2 flex flex-col gap-1">
@@ -255,6 +360,7 @@ export default function SettingsPanelField({ field }: SettingsPanelFieldProps) {
                           ))}
                         </div>
                       )}
+
                       <div className="col-span-2 flex gap-2">
                         <div className="flex items-center gap-1">
                           <input

@@ -9,6 +9,7 @@ export function Canvas() {
     register,
     handleSubmit,
     reset,
+    watch,
     formState: { errors },
   } = useForm({
     shouldUnregister: true,
@@ -20,6 +21,8 @@ export function Canvas() {
     reset();
   }
 
+  const allValues = watch();
+
   return (
     <div className="overflow-y-scroll custom-scrollbar space-y-6 p-4">
       <h3 className="text-2xl font-medium uppercase tracking-wider">Canvas</h3>
@@ -29,6 +32,19 @@ export function Canvas() {
         onSubmit={handleSubmit(onSubmit)}
       >
         {fields.map((field) => {
+          const condition = field.visibilityCondition;
+
+          if (condition?.dependsOnFieldId) {
+            const targetField = fields.find(
+              (field) => field.id === condition.dependsOnFieldId,
+            );
+            const targetValue = allValues[targetField?.name || ""];
+
+            if (String(targetValue) !== condition.equalsValue) {
+              return null;
+            }
+          }
+
           const isDisplay = ["separator", "heading"].includes(field.type);
 
           return (
