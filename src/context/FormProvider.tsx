@@ -17,6 +17,8 @@ type FormContextType = {
   submissions: Submission[];
   addSubmission: (data: Submission) => void;
   clearSubmissions: () => void;
+  webhookUrl: string;
+  setWebhookUrl: (url: string) => void;
 };
 
 const FormContext = createContext<FormContextType | undefined>(undefined);
@@ -27,6 +29,7 @@ export function FormProvider({ children }: { children: ReactNode }) {
     "submissions",
     [],
   );
+  const [webhookUrl, setWebhookUrl] = useLocalStorage<string>("webhookUrl", "");
 
   function addField(field: FormField) {
     setFields((prev) => [...prev, field]);
@@ -112,6 +115,8 @@ export function FormProvider({ children }: { children: ReactNode }) {
         submissions,
         addSubmission,
         clearSubmissions,
+        setWebhookUrl,
+        webhookUrl,
       }}
     >
       {children}

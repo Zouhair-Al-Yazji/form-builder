@@ -4,7 +4,7 @@ import { useForm as useFormProvider } from "../context/FormProvider";
 import { RenderField } from "./RenderField";
 
 export function Canvas() {
-  const { fields, addSubmission } = useFormProvider();
+  const { fields, addSubmission, webhookUrl } = useFormProvider();
   const {
     register,
     handleSubmit,
@@ -15,8 +15,25 @@ export function Canvas() {
     shouldUnregister: true,
   });
 
-  function onSubmit(data: any) {
+  async function onSubmit(data: any) {
     addSubmission(data);
+
+    if (webhookUrl) {
+      try {
+        await fetch(webhookUrl, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        });
+      } catch (error) {
+        console.error("Failed to send webhook:", error);
+        alert("Form saved locally, but webhook failed. Check console.");
+        return;
+      }
+    }
+
     alert("Form Submitted and saved to settings!");
     reset();
   }
@@ -40,7 +57,7 @@ export function Canvas() {
             );
             const targetValue = allValues[targetField?.name || ""];
 
-            if (String(targetValue) !== condition.equalsValue) {
+            if (String(targetValue) !== String(condition.equalsValue)) {
               return null;
             }
           }
