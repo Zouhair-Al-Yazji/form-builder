@@ -1,5 +1,5 @@
 import { Activity, useState } from "react";
-import { useForm } from "../context/FormProvider";
+import { useFormBuilder } from "../../../hooks/useFormBuilder";
 import SettingsPanelField from "./SettingsPanelField";
 import {
   IconCheck,
@@ -19,7 +19,7 @@ export function SettingsPanel() {
     clearSubmissions,
     webhookUrl,
     setWebhookUrl,
-  } = useForm();
+  } = useFormBuilder();
   const [activeTap, setActiveTap] = useState<Tap>("edit");
   const [copied, setCopied] = useState(false);
   const [embedType, setEmbedType] = useState<"js" | "jsx">("js");
@@ -425,140 +425,169 @@ export default function GeneratedForm() {
   };
 
   return (
-    <div className="overflow-y-scroll custom-scrollbar space-y-6 p-4">
-      <h3 className="text-2xl font-medium uppercase tracking-wider">
-        Settings Panel
-      </h3>
+    <div className="h-full bg-white flex flex-col">
+      <div className="shrink-0 p-6 pb-0 flex flex-col gap-6">
+        <div className="flex flex-col gap-1">
+          <h3 className="text-sm font-semibold uppercase tracking-widest text-zinc-400">
+            Settings Panel
+          </h3>
+          <p className="text-xs text-zinc-500">Configure your form</p>
+        </div>
 
-      <div className="w-full bg-[#434343]/80 flex items-center">
-        <button
-          onClick={() => setActiveTap("edit")}
-          className={`${activeTap === "edit" && "bg-[#555]"} flex-1 flex items-center justify-center gap-1 px-3 py-2 cursor-pointer text-sm font-medium`}
-        >
-          <IconEdit className="size-5" />
-          Edit
-        </button>
-        <button
-          onClick={() => setActiveTap("submission")}
-          className={`${activeTap === "submission" && "bg-[#555]"} flex-1 flex items-center justify-center gap-1 px-3 py-2 cursor-pointer text-sm font-medium`}
-        >
-          <IconSend className="size-5" />
-          Submissions
-        </button>
-        <button
-          onClick={() => setActiveTap("integration")}
-          className={`${activeTap === "integration" && "bg-[#555]"} flex-1 flex items-center justify-center gap-1 px-3 py-2 cursor-pointer text-sm font-medium`}
-        >
-          <IconPlugConnected className="size-5" /> Integrate
-        </button>
+        <div className="w-full flex items-center border-b border-zinc-200">
+          <button
+            onClick={() => setActiveTap("edit")}
+            className={`flex-1 flex items-center justify-center gap-2 px-3 py-3 cursor-pointer text-sm font-medium transition-all ${
+              activeTap === "edit"
+                ? "text-blue-600 border-b-2 border-blue-600"
+                : "text-zinc-500 hover:text-zinc-700 hover:bg-zinc-50"
+            }`}
+          >
+            <IconEdit className="size-4" />
+            Edit
+          </button>
+          <button
+            onClick={() => setActiveTap("submission")}
+            className={`flex-1 flex items-center justify-center gap-2 px-3 py-3 cursor-pointer text-sm font-medium transition-all ${
+              activeTap === "submission"
+                ? "text-blue-600 border-b-2 border-blue-600"
+                : "text-zinc-500 hover:text-zinc-700 hover:bg-zinc-50"
+            }`}
+          >
+            <IconSend className="size-4" />
+            Submissions
+          </button>
+          <button
+            onClick={() => setActiveTap("integration")}
+            className={`flex-1 flex items-center justify-center gap-2 px-3 py-3 cursor-pointer text-sm font-medium transition-all ${
+              activeTap === "integration"
+                ? "text-blue-600 border-b-2 border-blue-600"
+                : "text-zinc-500 hover:text-zinc-700 hover:bg-zinc-50"
+            }`}
+          >
+            <IconPlugConnected className="size-4" /> Integrate
+          </button>
+        </div>
       </div>
 
-      <Activity mode={activeTap === "submission" ? "visible" : "hidden"}>
-        <div className="flex flex-col gap-4">
-          {submissions.length === 0 ? (
-            <p className="text-sm text-gray-400 italic">No submissions yet.</p>
-          ) : (
-            <>
-              <button
-                onClick={clearSubmissions}
-                className="mb-2 w-fit text-xs cursor-pointer text-red-400 hover:text-red-300 transition-colors"
-              >
-                Clear Submission History
-              </button>
-              {submissions.map((submission, index) => (
-                <div
-                  key={index}
-                  className="bg-[#1e1e1e] p-3 rounded-lg border border-slate-700"
+      <div className="flex-1 overflow-y-auto custom-scrollbar p-6">
+        <Activity mode={activeTap === "submission" ? "visible" : "hidden"}>
+          <div className="flex flex-col gap-4">
+            {submissions.length === 0 ? (
+              <p className="text-sm text-zinc-500 italic text-center py-8">
+                No submissions yet.
+              </p>
+            ) : (
+              <>
+                <button
+                  onClick={clearSubmissions}
+                  className="mb-2 w-fit text-xs font-medium cursor-pointer text-red-500 hover:text-red-600 transition-colors"
                 >
-                  <p className="text-xs text-blue-400 mb-2 font-mono">
-                    Submission #{submissions.length - index}
-                  </p>
-                  <pre className="text-xs overflow-x-auto text-green-400">
-                    {JSON.stringify(submission, null, 2)}
-                  </pre>
-                </div>
-              ))}
-            </>
-          )}
-        </div>
-      </Activity>
-
-      <Activity mode={activeTap === "edit" ? "visible" : "hidden"}>
-        <div className="flex flex-col gap-4">
-          {fields.map((field) => (
-            <SettingsPanelField key={field.id} field={field} />
-          ))}
-        </div>
-
-        <Activity mode={fields.length > 0 ? "visible" : "hidden"}>
-          <button
-            onClick={clearFields}
-            className="transition-colors text-sm font-medium cursor-pointer bg-[#444] hover:bg-[#555] rounded px-5 py-2"
-          >
-            Remove All
-          </button>
+                  Clear Submission History
+                </button>
+                {submissions.map((submission, index) => (
+                  <div
+                    key={index}
+                    className="bg-zinc-50 p-4 rounded-lg border border-zinc-200"
+                  >
+                    <p className="text-xs text-zinc-500 mb-2 font-mono">
+                      Submission #{submissions.length - index}
+                    </p>
+                    <pre className="text-xs overflow-x-auto text-zinc-800">
+                      {JSON.stringify(submission, null, 2)}
+                    </pre>
+                  </div>
+                ))}
+              </>
+            )}
+          </div>
         </Activity>
-      </Activity>
 
-      <Activity mode={activeTap === "integration" ? "visible" : "hidden"}>
-        <div className="flex flex-col gap-4">
-          <div className="flex flex-col gap-2">
-            <label className="text-sm font-medium text-blue-400">
-              Webhook URL
-            </label>
-            <p className="text-xs text-gray-400">
-              Where should form submissions be sent?
-            </p>
-            <input
-              type="url"
-              placeholder="https://api.example.com/webhook"
-              value={webhookUrl}
-              onChange={(e) => setWebhookUrl(e.target.value)}
-              className="w-full p-2 rounded-md border border-slate-700 bg-[#1e1e1e] text-sm focus:border-blue-500 outline-none transition-all"
-            />
+        <Activity mode={activeTap === "edit" ? "visible" : "hidden"}>
+          <div className="flex flex-col gap-4">
+            {fields.map((field) => (
+              <SettingsPanelField key={field.id} field={field} />
+            ))}
           </div>
 
-          <div className="flex flex-col gap-2 border-t border-slate-700 pt-4">
-            <div className="flex items-center justify-between mb-2">
-              <div className="flex bg-[#1e1e1e] p-1 rounded-md border border-slate-700">
+          <Activity mode={fields.length > 0 ? "visible" : "hidden"}>
+            <button
+              onClick={clearFields}
+              className="w-full mt-4 transition-colors text-sm font-medium cursor-pointer border border-zinc-200 bg-white text-zinc-700 hover:bg-zinc-50 rounded-lg px-5 py-2.5 shadow-sm"
+            >
+              Remove All Fields
+            </button>
+          </Activity>
+        </Activity>
+
+        <Activity mode={activeTap === "integration" ? "visible" : "hidden"}>
+          <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-2">
+              <label className="text-sm font-medium text-zinc-900">
+                Webhook URL
+              </label>
+              <p className="text-xs text-zinc-500">
+                Where should form submissions be sent?
+              </p>
+              <input
+                type="url"
+                placeholder="https://api.example.com/webhook"
+                value={webhookUrl}
+                onChange={(e) => setWebhookUrl(e.target.value)}
+                className="w-full p-2.5 rounded-md border border-zinc-200 bg-white text-sm text-zinc-900 focus:border-zinc-900 focus:ring-1 focus:ring-zinc-900 outline-none transition-all placeholder:text-zinc-400"
+              />
+            </div>
+
+            <div className="flex flex-col gap-3 pt-4 border-t border-zinc-200">
+              <div className="flex items-center justify-between mb-1">
+                <div className="flex bg-zinc-100 p-1 rounded-md border border-zinc-200">
+                  <button
+                    onClick={() => setEmbedType("js")}
+                    className={`px-3 py-1.5 text-xs font-medium rounded-sm transition-all ${
+                      embedType === "js"
+                        ? "bg-white text-zinc-900 shadow-sm"
+                        : "text-zinc-500 hover:text-zinc-700"
+                    } cursor-pointer`}
+                  >
+                    Vanilla JS
+                  </button>
+                  <button
+                    onClick={() => setEmbedType("jsx")}
+                    className={`px-3 py-1.5 text-xs font-medium rounded-sm transition-all ${
+                      embedType === "jsx"
+                        ? "bg-white text-zinc-900 shadow-sm"
+                        : "text-zinc-500 hover:text-zinc-700"
+                    } cursor-pointer`}
+                  >
+                    React JSX
+                  </button>
+                </div>
+
                 <button
-                  onClick={() => setEmbedType("js")}
-                  className={`px-3 py-1 text-xs rounded-sm transition-all ${embedType === "js" ? "bg-blue-600 text-white" : "text-gray-400 hover:text-white"} cursor-pointer`}
+                  onClick={handleCopy}
+                  className="text-xs bg-zinc-900 hover:bg-zinc-800 text-white px-3 py-2 rounded-md font-medium flex items-center gap-1.5 cursor-pointer shadow-sm transition-colors"
                 >
-                  Vanilla JS
-                </button>
-                <button
-                  onClick={() => setEmbedType("jsx")}
-                  className={`px-3 py-1 text-xs rounded-sm transition-all ${embedType === "jsx" ? "bg-blue-600 text-white" : "text-gray-400 hover:text-white"} cursor-pointer`}
-                >
-                  React JSX
+                  {copied ? (
+                    <>
+                      <IconCheck size={14} /> Copied
+                    </>
+                  ) : (
+                    <>
+                      <IconCopy size={14} /> Copy Code
+                    </>
+                  )}
                 </button>
               </div>
 
-              <button
-                onClick={handleCopy}
-                className="text-xs bg-blue-600 hover:bg-blue-500 text-white px-3 py-1 rounded flex items-center gap-1 cursor-pointer"
-              >
-                {copied ? (
-                  <>
-                    <IconCheck size={14} /> Copied
-                  </>
-                ) : (
-                  <>
-                    <IconCopy size={14} /> Copy Code
-                  </>
-                )}
-              </button>
+              <textarea
+                readOnly
+                value={embedType === "js" ? getEmbedCode() : getJSXCode()}
+                className="w-full h-64 p-4 rounded-md border border-zinc-200 bg-zinc-50 text-xs font-mono text-zinc-800 outline-none resize-none focus:ring-1 focus:ring-zinc-900"
+              />
             </div>
-
-            <textarea
-              readOnly
-              value={embedType === "js" ? getEmbedCode() : getJSXCode()}
-              className="w-full h-48 p-3 rounded-md border border-slate-700 bg-[#1e1e1e] text-xs font-mono text-green-400 outline-none resize-none"
-            />
           </div>
-        </div>
-      </Activity>
+        </Activity>
+      </div>
     </div>
   );
 }
