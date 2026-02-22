@@ -3,11 +3,6 @@ import { useEmbedCodeGenerator } from "../../hooks/useEmbedCodeGenerator";
 import { ToggleGroup } from "../../../../components/ui/ToggleGroup";
 import type { FormField } from "../../../../types/types";
 
-/**
- * Embed type options for the ToggleGroup.
- * Defined as a constant outside the component to avoid re-creating
- * this array on every render (another subtle performance pattern).
- */
 const EMBED_TYPE_OPTIONS = [
   { value: "js" as const, label: "Vanilla JS" },
   { value: "jsx" as const, label: "React JSX" },
@@ -19,21 +14,6 @@ type IntegrationTabProps = {
   setWebhookUrl: (url: string) => void;
 };
 
-/**
- * IntegrationTab — Webhook config + embed code generator
- *
- * WHY: This tab was the biggest contributor to SettingsPanel's size (~60%).
- * After extracting the code generators into useEmbedCodeGenerator, this
- * component is now a clean ~60-line UI that delegates all logic to the hook.
- *
- * PATTERN: "Smart Hook + Dumb Component" — the hook does the heavy lifting
- * (memoization, clipboard, template generation), and this component
- * just renders the result. This makes the UI trivially easy to redesign.
- *
- * DATA FLOW:
- *   fields + webhookUrl (from parent) → useEmbedCodeGenerator (hook)
- *     → { activeCode, copyCode, copied } → rendered in this component
- */
 export function IntegrationTab({
   fields,
   webhookUrl,

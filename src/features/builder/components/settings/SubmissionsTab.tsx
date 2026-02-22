@@ -3,19 +3,6 @@ type SubmissionsTabProps = {
   clearSubmissions: () => void;
 };
 
-/**
- * SubmissionsTab — Renders submission history with empty state
- *
- * WHY: The submissions list is completely independent of the other two tabs.
- * Extracting it means:
- *   1. SettingsPanel stays lean — it doesn't care about submission rendering
- *   2. This component can be reused or replaced independently
- *   3. The empty state logic lives right next to the list it describes
- *
- * DATA FLOW:
- *   FormBuilderContext → useFormBuilder() → SettingsPanel
- *     → SubmissionsTab (submissions, clearSubmissions props)
- */
 export function SubmissionsTab({
   submissions,
   clearSubmissions,

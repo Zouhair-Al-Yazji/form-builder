@@ -7,19 +7,6 @@ type EditTabProps = {
   clearFields: () => void;
 };
 
-/**
- * EditTab — Renders the field list and "Remove All Fields" button
- *
- * WHY: This tab's job is simple — map fields to SettingsPanelField components.
- * By isolating it, the parent SettingsPanel doesn't need to know about field
- * rendering at all. This is the Composition pattern: the parent decides WHICH
- * tab to show, and each tab decides HOW to render itself.
- *
- * DATA FLOW:
- *   FormBuilderContext → useFormBuilder() → SettingsPanel (parent)
- *     → EditTab (fields, clearFields props)
- *       → SettingsPanelField (individual field editing)
- */
 export function EditTab({ fields, clearFields }: EditTabProps) {
   return (
     <>
