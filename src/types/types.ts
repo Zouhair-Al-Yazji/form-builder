@@ -1,7 +1,5 @@
 import {
   IconAlphabetLatin,
-  IconNumbers,
-  IconChevronDown,
   IconCheckbox,
   IconMail,
   IconLock,
@@ -11,6 +9,14 @@ import {
   IconH2,
   IconH3,
   IconPilcrow,
+  IconAlignLeft,
+  IconPhone,
+  IconLink,
+  IconUpload,
+  IconList,
+  IconHash,
+  IconCalendar,
+  IconHandClick,
 } from "@tabler/icons-react";
 import type { ElementType } from "react";
 
@@ -22,29 +28,138 @@ export type FieldType =
   | "email"
   | "password"
   | "separator"
-  | "heading";
+  | "heading"
+  | "textarea"
+  | "tel"
+  | "file"
+  | "url"
+  | "date"
+  | "button"
+  | "submit"
+  | "reset";
 
-export const FIELD_CONFIG: Record<
-  FieldType,
-  { label: string; icon: ElementType; isDisplayOnly?: boolean }
-> = {
-  text: { label: "Text Input", icon: IconAlphabetLatin },
-  number: { label: "Number Input", icon: IconNumbers },
-  select: { label: "Dropdown Menu", icon: IconChevronDown },
-  checkbox: { label: "Checkbox", icon: IconCheckbox },
-  email: { label: "Email Input", icon: IconMail },
-  password: { label: "Password Input", icon: IconLock },
-  separator: {
-    label: "Separator",
-    icon: IconSeparatorHorizontal,
-    isDisplayOnly: true,
-  },
-  heading: {
-    label: "Heading",
-    icon: IconHeading,
-    isDisplayOnly: true,
-  },
+export type FIELD_TYPES_Type = {
+  type: FieldType;
+  label: string;
+  description: string;
+  icon: ElementType;
+  category: "input" | "display" | "button";
 };
+
+export const FIELD_TYPES: FIELD_TYPES_Type[] = [
+  {
+    type: "text",
+    label: "Text",
+    description: "Single line text input",
+    icon: IconAlphabetLatin,
+    category: "input",
+  },
+  {
+    type: "number",
+    label: "Number",
+    description: "Input field for number values",
+    icon: IconHash,
+    category: "input",
+  },
+  {
+    type: "select",
+    label: "Select",
+    description: "Dropdown select",
+    icon: IconList,
+    category: "input",
+  },
+  {
+    type: "checkbox",
+    label: "Checkbox",
+    description: "Checkbox input",
+    icon: IconCheckbox,
+    category: "input",
+  },
+  {
+    type: "email",
+    label: "Email",
+    description: "Input field for email addresses",
+    icon: IconMail,
+    category: "input",
+  },
+  {
+    type: "password",
+    label: "Password",
+    description: "Input field for passwords",
+    icon: IconLock,
+    category: "input",
+  },
+  {
+    type: "textarea",
+    label: "Text Area",
+    description: "Multi-line text input",
+    icon: IconAlignLeft,
+    category: "input",
+  },
+  {
+    type: "tel",
+    label: "Telephone",
+    description: "Input field for telephones",
+    icon: IconPhone,
+    category: "input",
+  },
+  {
+    type: "file",
+    label: "File Upload",
+    description: "Input field for file uploads",
+    icon: IconUpload,
+    category: "input",
+  },
+  {
+    type: "url",
+    label: "URL",
+    description: "Input field for URLs",
+    icon: IconLink,
+    category: "input",
+  },
+  {
+    type: "date",
+    label: "Date Picker",
+    description: "Date picker input",
+    icon: IconCalendar,
+    category: "input",
+  },
+  {
+    type: "separator",
+    label: "Separator",
+    description: "",
+    icon: IconSeparatorHorizontal,
+    category: "display",
+  },
+  {
+    type: "heading",
+    label: "Heading",
+    description: "",
+    icon: IconHeading,
+    category: "display",
+  },
+  {
+    type: "button",
+    label: "Button",
+    description: "Button",
+    icon: IconHandClick,
+    category: "button",
+  },
+  {
+    type: "submit",
+    label: "Submit",
+    description: "Button to submit form",
+    icon: IconHandClick,
+    category: "button",
+  },
+  {
+    type: "reset",
+    label: "Reset",
+    description: "Button to reset form values",
+    icon: IconHandClick,
+    category: "button",
+  },
+];
 
 export type FormOption = {
   label: string;

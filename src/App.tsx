@@ -1,35 +1,43 @@
 import { FormPreview } from "./features/builder/components/FormPreview";
 import { SidebarControls } from "./features/builder/components/SidebarControls";
 import { SettingsPanel } from "./features/builder/components/SettingsPanel";
-
-import { IconForms } from "@tabler/icons-react";
+import Header from "./components/ui/Header";
+import { IconChevronLeft, IconChevronRight } from "@tabler/icons-react";
+import { useState } from "react";
 
 export default function App() {
+  const [leftSidebarOpen, setLeftSidebarOpen] = useState(true);
+  const [rightSidebarOpen, setRightSidebarOpen] = useState(true);
+
   return (
     <div className="flex flex-col h-dvh root bg-zinc-50 text-zinc-900 font-sans overflow-hidden">
-      {/* App Header */}
-      <header className="h-14 shrink-0 border-b border-zinc-200 bg-white flex items-center justify-between px-6 z-10 relative shadow-sm">
-        <div className="flex items-center gap-2">
-          <div className="bg-zinc-900 p-1.5 rounded-md text-white">
-            <IconForms size={18} stroke={1.5} />
-          </div>
-          <h1 className="font-semibold text-sm tracking-wide text-zinc-800">
-            Form<span className="text-zinc-400 font-normal">Builder</span>
-          </h1>
-        </div>
-        <div className="flex items-center gap-4">
-          <div className="text-xs font-medium text-zinc-500 bg-zinc-100 px-3 py-1 rounded-full border border-zinc-200">
-            Draft
-          </div>
-        </div>
-      </header>
+      <Header />
 
-      {/* Main Workspace */}
-      <main className="flex-1 overflow-y-auto lg:overflow-hidden flex flex-col lg:grid lg:grid-cols-[280px_1fr_350px]">
+      <main className="relative flex-1 overflow-y-auto lg:overflow-hidden flex flex-col lg:flex-row">
         {/* Left column: Controls */}
-        <div className="h-64 lg:h-full shrink-0 border-b lg:border-b-0 lg:border-r border-zinc-200 bg-white lg:overflow-hidden">
-          <SidebarControls />
-        </div>
+        {leftSidebarOpen ? (
+          <div className="w-70 h-64 lg:h-full shrink-0 border-b lg:border-b-0 lg:border-r border-zinc-200 bg-white lg:overflow-hidden">
+            <SidebarControls />
+          </div>
+        ) : (
+          <div className="bg-white border-r p-1 border-[#E2E8F0] flex flex-col items-center py-4">
+            <button
+              onClick={() => setLeftSidebarOpen(true)}
+              className="transition-colors p-2 rounded-lg hover:bg-zinc-50 cursor-pointer"
+            >
+              <IconChevronRight className="w-5 h-5 text-[#64748B]" stroke={2} />
+            </button>
+          </div>
+        )}
+
+        {leftSidebarOpen && (
+          <button
+            className="absolute bg-white rounded-md left-67 p-1.5 transition-colors hover:bg-zinc-50 z-10 top-4 cursor-pointer shadow"
+            onClick={() => setLeftSidebarOpen(false)}
+          >
+            <IconChevronLeft className="w-4 h-4 text-[#64748B]" stroke={2} />
+          </button>
+        )}
 
         {/* Center column: Canvas/Preview */}
         <div className="min-h-[600px] lg:min-h-0 flex-1 lg:h-full lg:overflow-hidden bg-zinc-50/50">
@@ -37,9 +45,29 @@ export default function App() {
         </div>
 
         {/* Right column: Settings */}
-        <div className="h-96 lg:h-full shrink-0 border-t lg:border-t-0 lg:border-l border-zinc-200 bg-white lg:overflow-hidden">
-          <SettingsPanel />
-        </div>
+        {rightSidebarOpen ? (
+          <div className="h-96 lg:h-full shrink-0 border-t lg:border-t-0 lg:border-l border-zinc-200 bg-white lg:overflow-hidden">
+            <SettingsPanel />
+          </div>
+        ) : (
+          <div className="bg-white border-r p-1 border-[#E2E8F0] flex flex-col items-center py-4">
+            <button
+              onClick={() => setRightSidebarOpen(true)}
+              className="transition-colors p-2 rounded-lg hover:bg-zinc-50 cursor-pointer"
+            >
+              <IconChevronLeft className="w-5 h-5 text-[#64748B]" stroke={2} />
+            </button>
+          </div>
+        )}
+
+        {rightSidebarOpen && (
+          <button
+            className="absolute bg-white rounded-md right-85 p-1.5 transition-colors hover:bg-zinc-50 z-10 top-4 cursor-pointer shadow"
+            onClick={() => setRightSidebarOpen(false)}
+          >
+            <IconChevronRight className="w-4 h-4 text-[#64748B]" stroke={2} />
+          </button>
+        )}
       </main>
     </div>
   );

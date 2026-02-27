@@ -16,10 +16,6 @@ export function FormPreview() {
 
   return (
     <div className="h-full overflow-y-auto custom-scrollbar space-y-6 p-8 bg-zinc-50/50">
-      <h3 className="text-2xl font-medium uppercase tracking-wider text-zinc-800">
-        Live Preview
-      </h3>
-
       {fields.length === 0 ? (
         <EmptyCanvas />
       ) : (

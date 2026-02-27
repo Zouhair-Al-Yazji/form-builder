@@ -6,7 +6,7 @@ import type {
   UseFormRegister,
   UseFormSetValue,
 } from "react-hook-form";
-import { FIELD_CONFIG, type FormField } from "../../../../types/types";
+import { FIELD_TYPES, type FormField } from "../../../../types/types";
 import { ConditionalLogicSection } from "./ConditionalLogicSection";
 import { SelectOptionsEditor } from "./SelectOptionsEditor";
 
@@ -128,22 +128,17 @@ export function StandardFieldForm({
       <div className="col-span-2 flex flex-col gap-1.5 pt-4 border-t border-zinc-100">
         <label className="text-sm font-medium text-zinc-700">Type</label>
         <ul className="flex flex-wrap items-center gap-2">
-          {(
-            Object.entries(FIELD_CONFIG) as [
-              FormField["type"],
-              (typeof FIELD_CONFIG)[FormField["type"]],
-            ][]
-          ).map(([type, info]) => {
-            const isActive = type === currentType;
-            const Icon = info.icon;
+          {FIELD_TYPES.map((fieldType) => {
+            const isActive = fieldType.type === currentType;
+            const Icon = fieldType.icon;
 
-            if (info.isDisplayOnly) return null;
+            if (fieldType.category === "display") return null;
 
             return (
-              <li key={type} title={type}>
+              <li key={fieldType.type} title={fieldType.type}>
                 <button
                   type="button"
-                  onClick={() => setValue("type", type as FormField["type"])}
+                  onClick={() => setValue("type", fieldType.type)}
                   className={`flex cursor-pointer border items-center p-2 rounded-md transition-all ${
                     isActive
                       ? "bg-zinc-900 border-zinc-900 text-white shadow-sm"
