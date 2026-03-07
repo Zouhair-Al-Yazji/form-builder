@@ -9,34 +9,69 @@ export default function ControlButton({
   const { addField } = useFormBuilder();
 
   function handleCreateField(field: FIELD_TYPES_Type) {
-    addField({
-      id: crypto.randomUUID(),
-      label: field.label,
-      required: false,
-      disabled: false,
-      width: "full",
-      name: `${field.type}-${crypto.randomUUID().slice(0, 5)}`,
-      type: field.type,
-      heading: field.type === "heading" ? "h1" : undefined,
-      options:
-        field.type === "select"
-          ? [
-              {
-                label: "Option 1",
-                value: "option-1",
-              },
-              {
-                label: "Option 2",
-                value: "option-2",
-              },
-            ]
-          : undefined,
-      placeHolder: `Enter ${field.type.toLocaleLowerCase()}...`,
-      visibilityCondition: {
-        dependsOnFieldId: "",
-        equalsValue: "",
-      },
-    });
+    if (field.category === "input") {
+      addField({
+        id: crypto.randomUUID(),
+        label: field.label,
+        required: false,
+        disabled: false,
+        category: field.category,
+        width: "full",
+        name: `${field.type}-${crypto.randomUUID().slice(0, 5)}`,
+        type: field.type,
+        options:
+          field.type === "select" || field.type === "radio"
+            ? [
+                {
+                  label: "Option 1",
+                  value: "option-1",
+                },
+                {
+                  label: "Option 2",
+                  value: "option-2",
+                },
+                {
+                  label: "Option 3",
+                  value: "option-3",
+                },
+              ]
+            : undefined,
+        placeHolder: `Enter ${field.type.toLocaleLowerCase()}...`,
+        visibilityCondition: {
+          dependsOnFieldId: "",
+          equalsValue: "",
+        },
+      });
+    } else if (field.category === "button") {
+      addField({
+        id: crypto.randomUUID(),
+        label:
+          field.type === "button"
+            ? "Button"
+            : field.type === "reset"
+              ? "Reset"
+              : "Submit",
+        category: field.category,
+        width: "full",
+        size: "default",
+        type: field.type,
+        variant:
+          field.type === "button"
+            ? "outline"
+            : field.type === "submit"
+              ? "default"
+              : "outline",
+      });
+    } else if (field.category === "display") {
+      addField({
+        id: crypto.randomUUID(),
+        label: field.label,
+        category: field.category,
+        width: "full",
+        heading: "h1",
+        type: field.type,
+      });
+    }
   }
 
   const Icon = fieldType.icon;

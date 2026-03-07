@@ -56,7 +56,9 @@ export function FormBuilderProvider({ children }: { children: ReactNode }) {
 
   const updateField = (id: string, updates: Partial<FormField>) => {
     setFields((prev) =>
-      prev.map((field) => (field.id === id ? { ...field, ...updates } : field)),
+      prev.map((field) =>
+        field.id === id ? ({ ...field, ...updates } as FormField) : field,
+      ),
     );
   };
 
@@ -101,8 +103,12 @@ export function FormBuilderProvider({ children }: { children: ReactNode }) {
         const newFields = [...prev];
         const fieldToDuplicate = { ...newFields[index] };
         fieldToDuplicate.id = crypto.randomUUID();
-        fieldToDuplicate.name = `${fieldToDuplicate.type}-${crypto.randomUUID().slice(0, 5)}`;
-        newFields.splice(index + 1, 0, fieldToDuplicate);
+
+        if (fieldToDuplicate.category === "input") {
+          fieldToDuplicate.name = `${fieldToDuplicate.type}-${crypto.randomUUID().slice(0, 5)}`;
+        }
+
+        newFields.splice(index + 1, 0, fieldToDuplicate as FormField);
         return newFields;
       }
       return prev;

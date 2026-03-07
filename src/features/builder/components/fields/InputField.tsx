@@ -1,10 +1,10 @@
 import { Input } from "../../../../components/ui/Input";
 import { Label } from "../../../../components/ui/Label";
 import { useFieldRegistration } from "../../hooks/useFieldRegistration";
-import type { FormField } from "../../../../types/types";
+import type { FormField, FormFieldInput } from "../../../../types/types";
 import { cn } from "../../../../utils/cn";
 
-export function InputField({ field }: { field: FormField }) {
+export function InputField({ field }: { field: FormField & FormFieldInput }) {
   const { registerProps, error, widthClass } = useFieldRegistration(field);
 
   return (

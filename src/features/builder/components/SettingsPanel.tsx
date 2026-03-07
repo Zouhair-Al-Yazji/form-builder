@@ -20,7 +20,6 @@ export function SettingsPanel() {
 
   return (
     <div className="h-full bg-white flex flex-col">
-      {/* ── Header ──────────────────────────────────────────────── */}
       <div className="shrink-0 p-6 pb-0 flex flex-col gap-6">
         <div className="flex flex-col gap-1">
           <h3 className="text-sm font-semibold uppercase tracking-widest text-zinc-400">
@@ -29,7 +28,6 @@ export function SettingsPanel() {
           <p className="text-xs text-zinc-500">Configure your form</p>
         </div>
 
-        {/* ── Tab Bar ─────────────────────────────────────────── */}
         <div className="w-full flex items-center border-b border-zinc-200">
           <TabButton
             active={activeTab === "edit"}
@@ -55,7 +53,6 @@ export function SettingsPanel() {
         </div>
       </div>
 
-      {/* ── Tab Content ───────────────────────────────────────── */}
       <div className="flex-1 overflow-y-auto custom-scrollbar p-6">
         <Activity mode={activeTab === "submission" ? "visible" : "hidden"}>
           <SubmissionsTab

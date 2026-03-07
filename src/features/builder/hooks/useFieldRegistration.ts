@@ -7,15 +7,17 @@ export function useFieldRegistration(field: FormField) {
     formState: { errors },
   } = useFormContext();
 
-  const error = errors[field.name];
+  const isInput = field.category === "input";
+  const name = isInput ? field.name : "";
+  const error = isInput ? errors[name] : undefined;
 
-  const registerProps = !["separator", "heading"].includes(field.type)
-    ? register(field.name, {
+  const registerProps = isInput
+    ? register(name, {
         required: field.required,
         pattern: field.validationRegex
           ? {
               value: new RegExp(field.validationRegex),
-              message: `The format for ${field.label || field.name} is invalid`,
+              message: `The format for ${field.label || name} is invalid`,
             }
           : undefined,
       })

@@ -2,13 +2,15 @@ import { IconPencil } from "@tabler/icons-react";
 import { DrawerPreview as Drawer } from "@base-ui/react/drawer";
 import type {
   FormField,
+  FormFieldButton,
+  FieldButtonType,
   FieldWidthType,
   HeadingTags,
 } from "../../../../types/types";
 import type { useFieldEditor } from "../../hooks/useFieldEditor";
-import { SeparatorForm } from "./SeparatorForm";
-import { HeadingForm } from "./HeadingForm";
+import { DisplayForm } from "./DisplayForm";
 import { StandardFieldForm } from "./StandardFieldForm";
+import { ButtonFieldForm } from "./ButtonFieldForm";
 
 type FieldEditDrawerProps = {
   field: FormField;
@@ -33,6 +35,7 @@ export function FieldEditDrawer({ field, editor }: FieldEditDrawerProps) {
     removeOption,
     moveOption,
     fields,
+    watch,
   } = editor;
 
   return (
@@ -43,15 +46,15 @@ export function FieldEditDrawer({ field, editor }: FieldEditDrawerProps) {
     >
       <Drawer.Trigger
         title="Edit Field"
-        className="cursor-pointer text-zinc-400 hover:text-zinc-900 transition-colors"
+        className="group cursor-pointer text-zinc-400 hover:text-zinc-900 transition-colors"
       >
-        <IconPencil className="size-4" />
+        <IconPencil className="hidden group-hover:block size-4" />
       </Drawer.Trigger>
 
       <Drawer.Portal>
         <Drawer.Backdrop className="[--backdrop-opacity:0.2] [--bleed:3rem] fixed inset-0 min-h-dvh bg-zinc-900/40 opacity-[calc(var(--backdrop-opacity)*(1-var(--drawer-swipe-progress)))] transition-opacity duration-450 ease-[cubic-bezier(0.32,0.72,0,1)] data-swiping:duration-0 data-ending-style:opacity-0 data-starting-style:opacity-0 ata-ending-style:duration-[calc(var(--drawer-swipe-strength)*400ms)] supports-[-webkit-touch-callout:none]:absolute backdrop-blur-sm" />
         <Drawer.Viewport className="[--viewport-padding:0px] supports-[-webkit-touch-callout:none]:[--viewport-padding:0.625rem] fixed inset-0 flex items-stretch justify-end p-(--viewport-padding)">
-          <Drawer.Popup className="[--bleed:3rem] supports-[-webkit-touch-callout:none]:[--bleed:0px] h-full w-full max-w-[480px] bg-white p-6 pr-12 text-zinc-900 shadow-2xl overflow-y-auto overscroll-contain touch-auto transform-[translateX(var(--drawer-swipe-movement-x))] transition-transform duration-450 ease-[cubic-bezier(0.32,0.72,0,1)] data-swiping:select-none data-ending-style:transform-[translateX(calc(100%-var(--bleed)+var(--viewport-padding)))] data-starting-style:transform-[translateX(calc(100%-var(--bleed)+var(--viewport-padding)))] data-ending-style:duration-[calc(var(--drawer-swipe-strength)*400ms)] supports-[-webkit-touch-callout:none]:mr-0 supports-[-webkit-touch-callout:none]:w-[20rem] supports-[-webkit-touch-callout:none]:max-w-[calc(100vw-20px)] supports-[-webkit-touch-callout:none]:rounded-[10px] supports-[-webkit-touch-callout:none]:pr-6">
+          <Drawer.Popup className="custom-scrollbar [--bleed:3rem] supports-[-webkit-touch-callout:none]:[--bleed:0px] h-full w-full max-w-[480px] bg-white p-6 pr-12 text-zinc-900 shadow-2xl overflow-y-auto overscroll-contain touch-auto transform-[translateX(var(--drawer-swipe-movement-x))] transition-transform duration-350 ease-[cubic-bezier(0.32,0.72,0,1)] data-swiping:select-none data-ending-style:transform-[translateX(calc(100%-var(--bleed)+var(--viewport-padding)))] data-starting-style:transform-[translateX(calc(100%-var(--bleed)+var(--viewport-padding)))] data-ending-style:duration-[calc(var(--drawer-swipe-strength)*400ms)] supports-[-webkit-touch-callout:none]:mr-0 supports-[-webkit-touch-callout:none]:w-[20rem] supports-[-webkit-touch-callout:none]:max-w-[calc(100vw-20px)] supports-[-webkit-touch-callout:none]:rounded-[10px] supports-[-webkit-touch-callout:none]:pr-6">
             <Drawer.Content className="mx-auto w-full max-w-lg">
               <Drawer.Title className="-mt-1.5 mb-1 text-xl border-b border-zinc-200 pb-4 font-semibold text-zinc-900">
                 Customize {field.type.toUpperCase()} Attributes
@@ -73,11 +76,10 @@ export function FieldEditDrawer({ field, editor }: FieldEditDrawerProps) {
                   />
                 </div>
 
-                {/* Type-specific form sections */}
-                {currentType === "separator" ? (
-                  <SeparatorForm />
-                ) : currentType === "heading" ? (
-                  <HeadingForm
+                {/* Category-specific form sections */}
+                {field.category === "display" ? (
+                  <DisplayForm
+                    currentType={currentType}
                     currentHeading={currentHeading}
                     currentWidth={currentWidth}
                     onHeadingChange={(v) =>
@@ -86,6 +88,22 @@ export function FieldEditDrawer({ field, editor }: FieldEditDrawerProps) {
                     onWidthChange={(v) =>
                       setValue("width", v as FieldWidthType)
                     }
+                  />
+                ) : field.category === "button" ? (
+                  <ButtonFieldForm
+                    field={field as FormField & FormFieldButton}
+                    currentWidth={currentWidth}
+                    onWidthChange={(v) =>
+                      setValue("width", v as FieldWidthType)
+                    }
+                    currentType={watch("type") as FieldButtonType}
+                    onTypeChange={(v) => setValue("type", v)}
+                    currentVariant={
+                      watch("variant") as FormFieldButton["variant"]
+                    }
+                    onVariantChange={(v) => setValue("variant", v)}
+                    currentSize={watch("size") as FormFieldButton["size"]}
+                    onSizeChange={(v) => setValue("size", v)}
                   />
                 ) : (
                   <StandardFieldForm
@@ -100,6 +118,10 @@ export function FieldEditDrawer({ field, editor }: FieldEditDrawerProps) {
                     appendOption={appendOption}
                     removeOption={removeOption}
                     moveOption={moveOption}
+                    currentWidth={currentWidth}
+                    onWidthChange={(v) =>
+                      setValue("width", v as FieldWidthType)
+                    }
                   />
                 )}
 

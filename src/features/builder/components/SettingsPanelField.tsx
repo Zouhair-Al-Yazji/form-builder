@@ -18,15 +18,13 @@ export default function SettingsPanelField({ field }: SettingsPanelFieldProps) {
   const editor = useFieldEditor(field);
 
   return (
-    <div className="flex items-center gap-3 bg-white p-3 rounded-lg border border-zinc-200 hover:border-zinc-300 hover:shadow-sm transition-all group/field">
-      <p className="flex-1 text-sm font-medium text-zinc-700">
-        {field.label || field.name}
-      </p>
+    <div className="group flex items-center gap-3 bg-white p-3 rounded-lg border border-zinc-200 hover:border-zinc-300 hover:shadow-sm transition-all group/field">
+      <p className="flex-1 text-sm font-medium text-zinc-700">{field.label}</p>
 
       <button
         type="button"
         onClick={() => duplicateField(field.id)}
-        className="cursor-pointer text-zinc-400 hover:text-zinc-900 transition-colors"
+        className="hidden group-hover:block cursor-pointer text-zinc-400 hover:text-zinc-900 transition-colors"
       >
         <IconCopy className="size-4" title="Duplicate Field" />
       </button>
@@ -36,7 +34,7 @@ export default function SettingsPanelField({ field }: SettingsPanelFieldProps) {
       <button
         title="Delete Field"
         onClick={() => removeField(field.id)}
-        className="cursor-pointer text-zinc-300 hover:text-red-500 transition-colors ml-1"
+        className="hidden group-hover:block cursor-pointer text-zinc-300 hover:text-red-500 transition-colors ml-1"
       >
         <IconTrash className="size-4" />
       </button>

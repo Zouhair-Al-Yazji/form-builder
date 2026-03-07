@@ -1,10 +1,10 @@
 import { Select } from "../../../../components/ui/Select";
 import { Label } from "../../../../components/ui/Label";
 import { useFieldRegistration } from "../../hooks/useFieldRegistration";
-import type { FormField } from "../../../../types/types";
+import type { FormField, FormFieldInput } from "../../../../types/types";
 import { cn } from "../../../../utils/cn";
 
-export function SelectField({ field }: { field: FormField }) {
+export function SelectField({ field }: { field: FormField & FormFieldInput }) {
   const { registerProps, error, widthClass } = useFieldRegistration(field);
 
   return (

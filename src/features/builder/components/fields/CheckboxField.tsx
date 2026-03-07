@@ -1,10 +1,14 @@
 import { Checkbox } from "../../../../components/ui/Checkbox";
 import { Label } from "../../../../components/ui/Label";
 import { useFieldRegistration } from "../../hooks/useFieldRegistration";
-import type { FormField } from "../../../../types/types";
+import type { FormField, FormFieldInput } from "../../../../types/types";
 import { cn } from "../../../../utils/cn";
 
-export function CheckboxField({ field }: { field: FormField }) {
+export function CheckboxField({
+  field,
+}: {
+  field: FormField & FormFieldInput;
+}) {
   const { registerProps, error, widthClass } = useFieldRegistration(field);
 
   return (

@@ -17,34 +17,50 @@ import {
   IconHash,
   IconCalendar,
   IconHandClick,
+  IconCircleDot,
+  IconToggleLeft,
 } from "@tabler/icons-react";
 import type { ElementType } from "react";
 
-export type FieldType =
+export type FieldInputType =
   | "text"
   | "number"
   | "select"
   | "checkbox"
   | "email"
   | "password"
-  | "separator"
-  | "heading"
   | "textarea"
   | "tel"
   | "file"
   | "url"
   | "date"
-  | "button"
-  | "submit"
-  | "reset";
+  | "radio"
+  | "switch";
+export type FieldButtonType = "button" | "submit" | "reset";
+export type FieldDisplayType = "separator" | "heading";
 
-export type FIELD_TYPES_Type = {
-  type: FieldType;
-  label: string;
-  description: string;
-  icon: ElementType;
-  category: "input" | "display" | "button";
-};
+export type FIELD_TYPES_Type =
+  | {
+      category: "input";
+      type: FieldInputType;
+      description: string;
+      label: string;
+      icon: ElementType;
+    }
+  | {
+      category: "display";
+      type: FieldDisplayType;
+      description: string;
+      label: string;
+      icon: ElementType;
+    }
+  | {
+      category: "button";
+      type: FieldButtonType;
+      description: string;
+      label: string;
+      icon: ElementType;
+    };
 
 export const FIELD_TYPES: FIELD_TYPES_Type[] = [
   {
@@ -118,6 +134,20 @@ export const FIELD_TYPES: FIELD_TYPES_Type[] = [
     category: "input",
   },
   {
+    type: "radio",
+    label: "Radio Group",
+    description: "Group of radio buttons",
+    icon: IconCircleDot,
+    category: "input",
+  },
+  {
+    type: "switch",
+    label: "Switch",
+    description: "Toggle switch",
+    icon: IconToggleLeft,
+    category: "input",
+  },
+  {
     type: "date",
     label: "Date Picker",
     description: "Date picker input",
@@ -186,20 +216,36 @@ export const FIELD_WIDTH_CONFIG: Record<FieldWidthType, string> = {
   third: "Third Width",
 };
 
-export type FormField = {
-  id: string;
-  type: FieldType;
-  label: string;
+export type FormFieldInput = {
+  category: "input";
+  type: FieldInputType;
   name: string;
   placeHolder?: string;
   required: boolean;
   disabled: boolean;
   validationRegex?: string;
-  width: FieldWidthType;
   options?: FormOption[];
-  heading?: HeadingTags;
-  visibilityCondition: {
+  visibilityCondition?: {
     dependsOnFieldId: string;
     equalsValue: string;
   };
 };
+
+export type FormFieldDisplay = {
+  category: "display";
+  heading?: HeadingTags;
+  type: FieldDisplayType;
+};
+
+export type FormFieldButton = {
+  category: "button";
+  type: FieldButtonType;
+  variant: "default" | "ghost" | "link" | "outline";
+  size: "default" | "sm" | "lg" | "icon";
+};
+
+export type FormField = {
+  id: string;
+  label: string;
+  width: FieldWidthType;
+} & (FormFieldInput | FormFieldDisplay | FormFieldButton);

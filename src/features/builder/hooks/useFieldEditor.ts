@@ -50,6 +50,7 @@ export function useFieldEditor(field: FormField) {
     register,
     handleSubmit,
     setValue,
+    watch,
     onSubmit,
 
     // Watched values

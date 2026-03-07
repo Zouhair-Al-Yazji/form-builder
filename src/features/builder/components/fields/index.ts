@@ -3,3 +3,7 @@ export { SelectField } from "./SelectField";
 export { CheckboxField } from "./CheckboxField";
 export { SeparatorField } from "./SeparatorField";
 export { HeadingField } from "./HeadingField";
+export { ButtonField } from "./ButtonField";
+export { RadioGroupField } from "./RadioGroupField";
+export { SwitchField } from "./SwitchField";
+export { TextareaField } from "./TextareaField";

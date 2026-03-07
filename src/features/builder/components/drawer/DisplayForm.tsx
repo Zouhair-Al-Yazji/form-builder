@@ -3,6 +3,7 @@ import {
   FIELD_HEADING_CONFIG,
   FIELD_WIDTH_CONFIG,
   type FieldWidthType,
+  type FormField,
   type HeadingTags,
 } from "../../../../types/types";
 
@@ -17,7 +18,7 @@ const HEADING_OPTIONS = (
   title: info.title,
 }));
 
-const WIDTH_OPTIONS = (
+export const WIDTH_OPTIONS = (
   Object.entries(FIELD_WIDTH_CONFIG) as [FieldWidthType, string][]
 ).map(([value, label]) => ({
   value,
@@ -29,14 +30,26 @@ type HeadingFormProps = {
   currentWidth: FieldWidthType;
   onHeadingChange: (value: HeadingTags) => void;
   onWidthChange: (value: FieldWidthType) => void;
+  currentType: FormField["type"];
 };
 
-export function HeadingForm({
+export function DisplayForm({
   currentHeading,
   currentWidth,
   onHeadingChange,
   onWidthChange,
+  currentType,
 }: HeadingFormProps) {
+  if (currentType === "separator")
+    return (
+      <div className="col-span-2 text-xs italic">
+        <p className="text-xs text-zinc-500 italic">
+          This is a visual divider. You can add text to the label above to show
+          it in the middle.
+        </p>
+      </div>
+    );
+
   return (
     <>
       <div className="col-span-2 flex flex-col gap-1.5">

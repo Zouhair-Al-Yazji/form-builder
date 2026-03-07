@@ -1,8 +1,12 @@
-import type { FormField } from "../../../../types/types";
+import type { FormField, FormFieldDisplay } from "../../../../types/types";
 import { cn } from "../../../../utils/cn";
 import { useFieldRegistration } from "../../hooks/useFieldRegistration";
 
-export function HeadingField({ field }: { field: FormField }) {
+export function HeadingField({
+  field,
+}: {
+  field: FormField & FormFieldDisplay;
+}) {
   const { widthClass } = useFieldRegistration(field);
 
   const calculateHeadingSize = () =>

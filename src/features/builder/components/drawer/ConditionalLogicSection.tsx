@@ -1,9 +1,9 @@
 import type { UseFormRegister } from "react-hook-form";
-import type { FormField } from "../../../../types/types";
+import type { FormField, FormFieldInput } from "../../../../types/types";
 
 type ConditionalLogicSectionProps = {
   register: UseFormRegister<FormField>;
-  field: FormField;
+  field: FormField & FormFieldInput;
   fields: FormField[];
   dependencyField: FormField | undefined;
   hasCondition: boolean;
@@ -46,9 +46,8 @@ export function ConditionalLogicSection({
             <option value="">(None)</option>
             {fields
               .filter(
-                (f) =>
-                  f.id !== field.id &&
-                  !["separator", "heading"].includes(f.type),
+                (f): f is FormField & FormFieldInput =>
+                  f.id !== field.id && f.category === "input",
               )
               .map((f) => (
                 <option key={f.id} value={f.id}>
