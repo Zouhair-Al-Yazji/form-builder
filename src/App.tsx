@@ -16,7 +16,7 @@ export default function App() {
       <main className="relative flex-1 overflow-y-auto lg:overflow-hidden flex flex-col lg:flex-row">
         {/* Left column: Controls */}
         {leftSidebarOpen ? (
-          <div className="w-70 h-64 lg:h-full shrink-0 border-b lg:border-b-0 lg:border-r border-zinc-200 bg-white lg:overflow-hidden">
+          <div className="w-80 bg-white h-64 lg:h-full shrink-0 border-b lg:border-b-0 lg:border-r border-zinc-200 lg:overflow-hidden">
             <SidebarControls />
           </div>
         ) : (
@@ -32,7 +32,7 @@ export default function App() {
 
         {leftSidebarOpen && (
           <button
-            className="absolute bg-white rounded-md left-67 p-1.5 transition-colors hover:bg-zinc-50 z-10 top-4 cursor-pointer shadow"
+            className="absolute bg-white rounded-md left-[304px] p-1.5 transition-colors hover:bg-zinc-50 z-10 top-4 cursor-pointer shadow"
             onClick={() => setLeftSidebarOpen(false)}
           >
             <IconChevronLeft className="w-4 h-4 text-[#64748B]" stroke={2} />
@@ -46,11 +46,11 @@ export default function App() {
 
         {/* Right column: Settings */}
         {rightSidebarOpen ? (
-          <div className="h-96 lg:h-full shrink-0 border-t lg:border-t-0 lg:border-l border-zinc-200 bg-white lg:overflow-hidden">
+          <div className="w-80 h-96 lg:h-full shrink-0 border-t lg:border-t-0 lg:border-l border-zinc-200 bg-white lg:overflow-hidden">
             <SettingsPanel />
           </div>
         ) : (
-          <div className="bg-white border-r p-1 border-[#E2E8F0] flex flex-col items-center py-4">
+          <div className="bg-white border-l p-1 border-[#E2E8F0] flex flex-col items-center py-4">
             <button
               onClick={() => setRightSidebarOpen(true)}
               className="transition-colors p-2 rounded-lg hover:bg-zinc-50 cursor-pointer"
@@ -62,7 +62,7 @@ export default function App() {
 
         {rightSidebarOpen && (
           <button
-            className="absolute bg-white rounded-md right-85 p-1.5 transition-colors hover:bg-zinc-50 z-10 top-4 cursor-pointer shadow"
+            className="absolute bg-white rounded-md right-[304px] p-1.5 transition-colors hover:bg-zinc-50 z-10 top-4 cursor-pointer shadow"
             onClick={() => setRightSidebarOpen(false)}
           >
             <IconChevronRight className="w-4 h-4 text-[#64748B]" stroke={2} />

@@ -37,7 +37,7 @@ export function ToggleGroup<T extends string>({
             title={option.title}
             onClick={() => onChange(option.value)}
             className={cn(
-              "px-3 py-1.5 text-xs font-medium rounded-sm transition-all cursor-pointer flex items-center justify-center",
+              "px-3 py-1.5 text-xs font-medium rounded-sm transition-all cursor-pointer flex items-center justify-center gap-1.5",
               value === option.value
                 ? "bg-white text-zinc-900 shadow-sm"
                 : "text-zinc-500 hover:text-zinc-700",

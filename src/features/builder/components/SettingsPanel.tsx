@@ -1,78 +1,34 @@
-import { Activity, useState } from "react";
+import { IconAdjustments } from "@tabler/icons-react";
 import { useFormBuilder } from "../../../hooks/useFormBuilder";
-import { IconEdit, IconPlugConnected, IconSend } from "@tabler/icons-react";
-import { TabButton } from "../../../components/ui/TabButton";
-import { EditTab, SubmissionsTab, IntegrationTab } from "./settings";
-
-type SettingsTab = "edit" | "integration" | "submission";
+import { EditTab } from "./settings";
 
 export function SettingsPanel() {
-  const {
-    fields,
-    clearFields,
-    submissions,
-    clearSubmissions,
-    webhookUrl,
-    setWebhookUrl,
-  } = useFormBuilder();
-
-  const [activeTab, setActiveTab] = useState<SettingsTab>("edit");
+  const { fields, clearFields } = useFormBuilder();
 
   return (
     <div className="h-full bg-white flex flex-col">
-      <div className="shrink-0 p-6 pb-0 flex flex-col gap-6">
-        <div className="flex flex-col gap-1">
-          <h3 className="text-sm font-semibold uppercase tracking-widest text-zinc-400">
-            Settings Panel
-          </h3>
-          <p className="text-xs text-zinc-500">Configure your form</p>
-        </div>
-
-        <div className="w-full flex items-center border-b border-zinc-200">
-          <TabButton
-            active={activeTab === "edit"}
-            onClick={() => setActiveTab("edit")}
-            icon={IconEdit}
-          >
-            Edit
-          </TabButton>
-          <TabButton
-            active={activeTab === "submission"}
-            onClick={() => setActiveTab("submission")}
-            icon={IconSend}
-          >
-            Submissions
-          </TabButton>
-          <TabButton
-            active={activeTab === "integration"}
-            onClick={() => setActiveTab("integration")}
-            icon={IconPlugConnected}
-          >
-            Integrate
-          </TabButton>
-        </div>
+      <div className="shrink-0 p-6 pb-0">
+        <h3 className="font-semibold uppercase tracking-widest">
+          Settings Panel
+        </h3>
+        <p className="text-sm text-zinc-500">Configure your form</p>
       </div>
 
-      <div className="flex-1 overflow-y-auto custom-scrollbar p-6">
-        <Activity mode={activeTab === "submission" ? "visible" : "hidden"}>
-          <SubmissionsTab
-            submissions={submissions}
-            clearSubmissions={clearSubmissions}
-          />
-        </Activity>
-
-        <Activity mode={activeTab === "edit" ? "visible" : "hidden"}>
+      {fields.length > 0 ? (
+        <div className="flex-1 overflow-y-auto custom-scrollbar p-6 pt-4">
           <EditTab fields={fields} clearFields={clearFields} />
-        </Activity>
-
-        <Activity mode={activeTab === "integration" ? "visible" : "hidden"}>
-          <IntegrationTab
-            fields={fields}
-            webhookUrl={webhookUrl}
-            setWebhookUrl={setWebhookUrl}
-          />
-        </Activity>
-      </div>
+        </div>
+      ) : (
+        <div className="flex-1 text-center py-12">
+          <div className="w-14 h-14 bg-zinc-100 rounded-full flex items-center justify-center mx-auto mb-4">
+            <IconAdjustments className="text-zinc-400" />
+          </div>
+          <p className="font-medium mb-1 text-[#1E293B]">No Fields Added</p>
+          <p className="text-sm text-[#94A3B8]">
+            Add a field to edits its properties
+          </p>
+        </div>
+      )}
     </div>
   );
 }

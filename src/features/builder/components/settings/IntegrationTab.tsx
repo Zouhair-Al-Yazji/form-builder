@@ -19,7 +19,7 @@ export function IntegrationTab({
   webhookUrl,
   setWebhookUrl,
 }: IntegrationTabProps) {
-  const { embedType, setEmbedType, activeCode, copyCode, copied } =
+  const { embedType, setEmbedType, activeCode, handleCopy, copied } =
     useEmbedCodeGenerator(fields, webhookUrl);
 
   return (
@@ -49,7 +49,7 @@ export function IntegrationTab({
           />
 
           <button
-            onClick={copyCode}
+            onClick={handleCopy}
             className="text-xs bg-zinc-900 hover:bg-zinc-800 text-white px-3 py-2 rounded-md font-medium flex items-center gap-1.5 cursor-pointer shadow-sm transition-colors"
           >
             {copied ? (
