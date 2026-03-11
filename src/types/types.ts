@@ -220,15 +220,11 @@ export type FormFieldInput = {
   category: "input";
   type: FieldInputType;
   name: string;
-  placeHolder?: string;
+  placeholder?: string;
   required: boolean;
   disabled: boolean;
   validationRegex?: string;
   options?: FormOption[];
-  visibilityCondition?: {
-    dependsOnFieldId: string;
-    equalsValue: string;
-  };
 };
 
 export type FormFieldDisplay = {
@@ -248,4 +244,8 @@ export type FormField = {
   id: string;
   label: string;
   width: FieldWidthType;
+  visibilityCondition?: {
+    dependsOnFieldId: string;
+    equalsValue: string;
+  };
 } & (FormFieldInput | FormFieldDisplay | FormFieldButton);

@@ -1,6 +1,7 @@
 import { Dialog } from "@base-ui/react/dialog";
 import { Button } from "./Button";
 import {
+  IconAdjustments,
   IconBrandJavascript,
   IconBrandReact,
   IconCheck,
@@ -11,10 +12,12 @@ import {
 import { ToggleGroup } from "./ToggleGroup";
 import { useEmbedCodeGenerator } from "../../features/builder/hooks/useEmbedCodeGenerator";
 import { useFormBuilder } from "../../hooks/useFormBuilder";
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import { oneDark } from "react-syntax-highlighter/dist/esm/styles/prism";
 
 const EMBED_TYPE_OPTIONS = [
-  { value: "js" as const, label: "Embedded JS", icon: IconBrandReact },
-  { value: "jsx" as const, label: "React (JSX)", icon: IconBrandJavascript },
+  { value: "js" as const, label: "Embedded JS", icon: IconBrandJavascript },
+  { value: "jsx" as const, label: "React (JSX)", icon: IconBrandReact },
 ];
 
 export function CodeExportModal() {
@@ -84,21 +87,48 @@ export function CodeExportModal() {
                   )}
                 </button>
 
-                <pre className="bg-[#1E293B] text-[#E2E8F0] p-4 rounded-xl overflow-auto text-sm leading-relaxed">
-                  <code>{activeCode}</code>
-                </pre>
+                <div className="bg-[#1E293B] rounded-xl overflow-hidden text-sm leading-relaxed">
+                  <SyntaxHighlighter
+                    language={embedType === "jsx" ? "jsx" : "javascript"}
+                    style={oneDark}
+                    showLineNumbers
+                    customStyle={{
+                      fontSize: "14px",
+                      margin: 0,
+                      padding: "24px 16px",
+                      background: "transparent",
+                    }}
+                    codeTagProps={{
+                      style: {
+                        fontFamily: "inherit",
+                      },
+                    }}
+                  >
+                    {activeCode}
+                  </SyntaxHighlighter>
+                </div>
               </div>
             </div>
           ) : (
-            <div className="flex-1">No Fields Added</div>
+            <div className="flex-1 text-center py-12">
+              <div className="w-14 h-14 bg-zinc-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <IconAdjustments className="text-zinc-400" />
+              </div>
+              <p className="font-medium mb-1 text-[#1E293B]">No Fields Added</p>
+              <p className="text-sm text-[#94A3B8]">
+                Add a field to edits its properties
+              </p>
+            </div>
           )}
 
-          <div>
-            <p className="text-xs text-[#64748B]">
-              💡 <strong>Tip:</strong> Replace 'YOUR_WEBHOOK_URL' with your
-              actual webhook endpoint to receive form submissions.
-            </p>
-          </div>
+          {fields.length > 0 && (
+            <div>
+              <p className="text-xs text-[#64748B]">
+                💡 <strong>Tip:</strong> Replace 'YOUR_WEBHOOK_URL' with your
+                actual webhook endpoint to receive form submissions.
+              </p>
+            </div>
+          )}
         </Dialog.Popup>
       </Dialog.Portal>
     </Dialog.Root>

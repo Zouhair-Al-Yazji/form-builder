@@ -36,7 +36,7 @@ export default function ControlButton({
                 },
               ]
             : undefined,
-        placeHolder: `Enter ${field.type.toLocaleLowerCase()}...`,
+        placeholder: `Enter ${field.type.toLocaleLowerCase()}...`,
         visibilityCondition: {
           dependsOnFieldId: "",
           equalsValue: "",

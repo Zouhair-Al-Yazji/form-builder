@@ -17,7 +17,7 @@ export function TextareaField({
         {field.required && <span className="text-red-500 ml-1">*</span>}
       </Label>
       <textarea
-        placeholder={field.placeHolder}
+        placeholder={field.placeholder}
         disabled={field.disabled}
         className={cn(
           "flex h-15 w-full rounded-md border border-zinc-200 bg-white px-3 py-2 text-sm text-zinc-900 placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-zinc-900/10 focus:border-zinc-900 disabled:cursor-not-allowed disabled:bg-zinc-50 disabled:text-zinc-500 transition-all duration-200",

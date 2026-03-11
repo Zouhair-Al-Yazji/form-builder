@@ -16,7 +16,7 @@ export function InputField({ field }: { field: FormField & FormFieldInput }) {
       <Input
         id={field.id}
         type={field.type}
-        placeholder={field.placeHolder}
+        placeholder={field.placeholder}
         disabled={field.disabled}
         error={!!error}
         className="w-full"
