@@ -1,5 +1,5 @@
 import { createContext, type ReactNode } from "react";
-import type { FormField } from "../types/types";
+import type { FormConfig, FormField } from "../types/types";
 import { useLocalStorage } from "../hooks/useLocalStorage";
 type FormBuilderContextType = {
   fields: FormField[];
@@ -17,6 +17,11 @@ type FormBuilderContextType = {
 
   webhookUrl: string;
   setWebhookUrl: (url: string) => void;
+
+  formName: string;
+  setFormName: (formName: string) => void;
+
+  importConfig: (config: FormConfig) => void;
 };
 
 // Create the context
@@ -28,6 +33,7 @@ const STORAGE_KEYS = {
   FIELDS: "form-builder-fields",
   SUBMISSIONS: "form-builder-submissions",
   WEBHOOK: "form-builder-webhook",
+  FORM_NAME: "form-name",
 };
 
 export function FormBuilderProvider({ children }: { children: ReactNode }) {
@@ -35,14 +41,16 @@ export function FormBuilderProvider({ children }: { children: ReactNode }) {
     STORAGE_KEYS.FIELDS,
     [],
   );
-
   const [submissions, setSubmissions] = useLocalStorage<
     Record<string, unknown>[]
   >(STORAGE_KEYS.SUBMISSIONS, []);
-
   const [webhookUrl, setWebhookUrlState] = useLocalStorage<string>(
     STORAGE_KEYS.WEBHOOK,
     "",
+  );
+  const [formName, setFormNameState] = useLocalStorage<string>(
+    STORAGE_KEYS.FORM_NAME,
+    "Untitled Form",
   );
 
   // Actions
@@ -127,6 +135,16 @@ export function FormBuilderProvider({ children }: { children: ReactNode }) {
     setWebhookUrlState(url);
   };
 
+  const setFormName = (formName: string) => {
+    setFormNameState(formName);
+  };
+
+  const importConfig = (config: FormConfig) => {
+    setFields(config.fields);
+    setWebhookUrlState(config.webhookUrl || "");
+    setFormNameState(config.name);
+  };
+
   return (
     <FormBuilderContext.Provider
       value={{
@@ -143,6 +161,9 @@ export function FormBuilderProvider({ children }: { children: ReactNode }) {
         clearSubmissions,
         webhookUrl,
         setWebhookUrl,
+        formName,
+        setFormName,
+        importConfig,
       }}
     >
       {children}

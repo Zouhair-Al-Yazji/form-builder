@@ -1,10 +1,8 @@
 import { useFormContext } from "react-hook-form";
 import { Button } from "../../../../components/ui/Button";
 import type { FormField, FormFieldButton } from "../../../../types/types";
-import { useFieldRegistration } from "../../hooks/useFieldRegistration";
 
 export function ButtonField({ field }: { field: FormField & FormFieldButton }) {
-  const { widthClass } = useFieldRegistration(field);
   const { reset } = useFormContext();
 
   const handleReset = (e: React.MouseEvent) => {
@@ -18,7 +16,7 @@ export function ButtonField({ field }: { field: FormField & FormFieldButton }) {
     <Button
       type={field.type}
       size={field.size}
-      className={widthClass}
+      className="w-full"
       variant={field.variant}
       onClick={field.type === "reset" ? handleReset : undefined}
     >

@@ -2,13 +2,12 @@ import { Select } from "../../../../components/ui/Select";
 import { Label } from "../../../../components/ui/Label";
 import { useFieldRegistration } from "../../hooks/useFieldRegistration";
 import type { FormField, FormFieldInput } from "../../../../types/types";
-import { cn } from "../../../../utils/cn";
 
 export function SelectField({ field }: { field: FormField & FormFieldInput }) {
-  const { registerProps, error, widthClass } = useFieldRegistration(field);
+  const { registerProps, error } = useFieldRegistration(field);
 
   return (
-    <div className={cn("flex flex-col gap-1.5", widthClass)}>
+    <div className="flex flex-col gap-1.5">
       <Label htmlFor={field.id} className="text-zinc-700 font-medium">
         {field.label}
         {field.required && <span className="text-red-500 ml-1">*</span>}

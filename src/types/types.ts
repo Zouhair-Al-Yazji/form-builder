@@ -249,3 +249,12 @@ export type FormField = {
     equalsValue: string;
   };
 } & (FormFieldInput | FormFieldDisplay | FormFieldButton);
+
+export type FormConfig = {
+  id: string;
+  name: string;
+  fields: FormField[];
+  webhookUrl?: string;
+  createdAt: string;
+  updatedAt: string;
+};

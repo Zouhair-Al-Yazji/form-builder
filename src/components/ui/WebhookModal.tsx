@@ -146,12 +146,15 @@ export function WebhookModal() {
           </div>
 
           {/* Footer */}
-          <div className="flex items-center justify-between gap-4">
+          <div className="flex items-center justify-end gap-4">
+            <Dialog.Close>
+              <Button variant="ghost">Cancel</Button>
+            </Dialog.Close>
+
             <Button
+              size="sm"
               disabled={!webhookUrl || testing}
               onClick={handleTest}
-              size="sm"
-              variant="outline"
             >
               {testing ? (
                 <span className="flex items-center gap-2">
@@ -165,13 +168,6 @@ export function WebhookModal() {
                 </>
               )}
             </Button>
-
-            <div className="flex gap-2">
-              <Dialog.Close>
-                <Button variant="ghost">Cancel</Button>
-              </Dialog.Close>
-              <Button size="sm">Save Configuration</Button>
-            </div>
           </div>
         </Dialog.Popup>
       </Dialog.Portal>
