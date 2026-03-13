@@ -258,3 +258,8 @@ export type FormConfig = {
   createdAt: string;
   updatedAt: string;
 };
+
+export type FormTemplate = FormConfig & {
+  previewImage: string;
+  description: string;
+};

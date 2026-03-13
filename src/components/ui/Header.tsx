@@ -2,7 +2,6 @@ import {
   IconDeviceFloppy,
   IconFileCode,
   IconFolderOpen,
-  IconLayout,
   IconUpload,
 } from "@tabler/icons-react";
 import { Button } from "./Button";
@@ -14,6 +13,7 @@ import type { FormConfig } from "../../types/types";
 import { Input } from "./Input";
 import { useRef } from "react";
 import { SettingsModal } from "./SettingsModal";
+import { TemplatesModal } from "./TemplatesModal";
 
 export default function Header() {
   const { fields, webhookUrl, importConfig, formName } = useFormBuilder();
@@ -76,10 +76,7 @@ export default function Header() {
       </div>
 
       <div className="flex gap-2 items-center">
-        <Button variant="ghost" size="sm">
-          <IconLayout className="w-5 h-5" />
-          <span>Templates</span>
-        </Button>
+        <TemplatesModal />
         <Button variant="ghost" size="sm">
           <IconFolderOpen className="w-5 h-5" />
           <span>Drafts</span>
