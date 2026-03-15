@@ -1,4 +1,4 @@
-import { motion, AnimatePresence } from "motion/react";
+import { motion } from "motion/react";
 import {
   FormProvider,
   type UseFormReturn,
@@ -33,54 +33,50 @@ export function LiveForm({
             className="grid grid-cols-6 gap-6 items-center"
             onSubmit={handleSubmit}
           >
-            <AnimatePresence mode="popLayout">
-              {fields.map((field) => {
-                const isInput = field.category === "input";
-                const condition = isInput
-                  ? field.visibilityCondition
-                  : undefined;
+            {fields.map((field) => {
+              const isInput = field.category === "input";
+              const condition = isInput ? field.visibilityCondition : undefined;
 
-                if (condition?.dependsOnFieldId) {
-                  const targetField = fields.find(
-                    (f) => f.id === condition.dependsOnFieldId,
-                  );
-                  const targetFieldName =
-                    targetField?.category === "input" ? targetField.name : "";
-                  const targetValue = allValues[targetFieldName];
-
-                  if (String(targetValue) !== String(condition.equalsValue)) {
-                    return null;
-                  }
-                }
-
-                const widthMap = {
-                  full: 6,
-                  half: 3,
-                  third: 2,
-                };
-                const span = widthMap[field.width] || 6;
-
-                return (
-                  <motion.div
-                    layout
-                    key={isInput ? `${field.id}-${field.name}` : field.id}
-                    initial={{ opacity: 0, y: 10, scale: 0.98 }}
-                    animate={{ opacity: 1, y: 0, scale: 1 }}
-                    exit={{
-                      opacity: 0,
-                      scale: 0.98,
-                      transition: { duration: 0.15 },
-                    }}
-                    transition={{ type: "spring", damping: 25, stiffness: 300 }}
-                    style={{
-                      gridColumn: `span ${span} / span ${span}`,
-                    }}
-                  >
-                    <FieldRenderer field={field} />
-                  </motion.div>
+              if (condition?.dependsOnFieldId) {
+                const targetField = fields.find(
+                  (f) => f.id === condition.dependsOnFieldId,
                 );
-              })}
-            </AnimatePresence>
+                const targetFieldName =
+                  targetField?.category === "input" ? targetField.name : "";
+                const targetValue = allValues[targetFieldName];
+
+                if (String(targetValue) !== String(condition.equalsValue)) {
+                  return null;
+                }
+              }
+
+              const widthMap = {
+                full: 6,
+                half: 3,
+                third: 2,
+              };
+              const span = widthMap[field.width] || 6;
+
+              return (
+                <motion.div
+                  layout
+                  key={isInput ? `${field.id}-${field.name}` : field.id}
+                  initial={{ opacity: 0, y: 10, scale: 0.98 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{
+                    opacity: 0,
+                    scale: 0.98,
+                    transition: { duration: 0.15 },
+                  }}
+                  transition={{ type: "spring", damping: 25, stiffness: 300 }}
+                  style={{
+                    gridColumn: `span ${span} / span ${span}`,
+                  }}
+                >
+                  <FieldRenderer field={field} />
+                </motion.div>
+              );
+            })}
           </form>
         </FormProvider>
       </div>

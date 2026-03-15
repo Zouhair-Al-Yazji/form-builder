@@ -1,8 +1,9 @@
 import {
   IconDeviceFloppy,
   IconFileCode,
-  IconFolderOpen,
   IconUpload,
+  IconArrowBackUp,
+  IconArrowForwardUp,
 } from "@tabler/icons-react";
 import { Button } from "./Button";
 import { BlocksIcon } from "./BlocksIcon";
@@ -14,10 +15,23 @@ import { Input } from "./Input";
 import { useRef } from "react";
 import { SettingsModal } from "./SettingsModal";
 import { TemplatesModal } from "./TemplatesModal";
+import { DraftsModal } from "./DraftsModal";
+import { useDrafts } from "../../hooks/useDrafts";
+import { toast } from "sonner";
 
 export default function Header() {
-  const { fields, webhookUrl, importConfig, formName } = useFormBuilder();
+  const {
+    fields,
+    webhookUrl,
+    importConfig,
+    formName,
+    undo,
+    redo,
+    canUndo,
+    canRedo,
+  } = useFormBuilder();
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const { saveAsNewDraft } = useDrafts();
 
   function handleImportJSON(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
@@ -36,6 +50,24 @@ export default function Header() {
 
     reader.readAsText(file);
     e.target.value = "";
+  }
+
+  function handleSaveDraft() {
+    if (!fields.length) {
+      alert("Please add at least one field to save a draft.");
+      return;
+    }
+
+    saveAsNewDraft({
+      id: crypto.randomUUID(),
+      name: formName || "Untitled Draft",
+      fields,
+      webhookUrl,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    });
+
+    toast.success("Draft saved successfully!");
   }
 
   function handleExportJSON() {
@@ -63,6 +95,7 @@ export default function Header() {
 
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
+    toast.success("Form exported successfully!");
   }
 
   return (
@@ -76,12 +109,30 @@ export default function Header() {
       </div>
 
       <div className="flex gap-2 items-center">
-        <TemplatesModal />
-        <Button variant="ghost" size="sm">
-          <IconFolderOpen className="w-5 h-5" />
-          <span>Drafts</span>
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={undo}
+          disabled={!canUndo}
+          className="px-2"
+        >
+          <IconArrowBackUp className="w-5 h-5" />
         </Button>
-        <Button variant="ghost" size="sm">
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={redo}
+          disabled={!canRedo}
+          className="px-2"
+        >
+          <IconArrowForwardUp className="w-5 h-5" />
+        </Button>
+
+        <div className="w-px h-7 bg-[#E2E8F0] mx-1" />
+
+        <TemplatesModal />
+        <DraftsModal />
+        <Button variant="ghost" size="sm" onClick={handleSaveDraft}>
           <IconDeviceFloppy className="w-5 h-5" />
           <span>Save</span>
         </Button>

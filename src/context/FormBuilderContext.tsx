@@ -1,6 +1,8 @@
 import { createContext, type ReactNode } from "react";
 import type { FormConfig, FormField } from "../types/types";
 import { useLocalStorage } from "../hooks/useLocalStorage";
+import { useHistory } from "../hooks/useHistory";
+
 type FormBuilderContextType = {
   fields: FormField[];
   addField: (field: FormField) => void;
@@ -10,6 +12,11 @@ type FormBuilderContextType = {
   goUp: (id: string) => void;
   goDown: (id: string) => void;
   duplicateField: (id: string) => void;
+
+  undo: () => void;
+  redo: () => void;
+  canUndo: boolean;
+  canRedo: boolean;
 
   submissions: Record<string, unknown>[];
   addSubmission: (data: Record<string, unknown>) => void;
@@ -37,10 +44,19 @@ const STORAGE_KEYS = {
 };
 
 export function FormBuilderProvider({ children }: { children: ReactNode }) {
-  const [fields, setFields] = useLocalStorage<FormField[]>(
+  const [localFields, setLocalFields] = useLocalStorage<FormField[]>(
     STORAGE_KEYS.FIELDS,
     [],
   );
+
+  const {
+    setValue: setFields,
+    undo,
+    redo,
+    canUndo,
+    canRedo,
+  } = useHistory(localFields, setLocalFields);
+
   const [submissions, setSubmissions] = useLocalStorage<
     Record<string, unknown>[]
   >(STORAGE_KEYS.SUBMISSIONS, []);
@@ -148,7 +164,7 @@ export function FormBuilderProvider({ children }: { children: ReactNode }) {
   return (
     <FormBuilderContext.Provider
       value={{
-        fields,
+        fields: localFields,
         addField,
         removeField,
         updateField,
@@ -156,6 +172,10 @@ export function FormBuilderProvider({ children }: { children: ReactNode }) {
         goUp,
         goDown,
         duplicateField,
+        undo,
+        redo,
+        canUndo,
+        canRedo,
         submissions,
         addSubmission,
         clearSubmissions,

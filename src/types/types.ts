@@ -260,6 +260,6 @@ export type FormConfig = {
 };
 
 export type FormTemplate = FormConfig & {
-  previewImage: string;
   description: string;
+  category: string;
 };

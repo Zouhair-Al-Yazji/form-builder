@@ -15,7 +15,7 @@ export function FormPreview() {
   const allValues = watch();
 
   return (
-    <div className="h-full bg-zinc-50/80 p-4 lg:p-6 overflow-y-auto custom-scrollbar flex flex-col items-center">
+    <div className="h-full bg-zinc-50/80 p-4 lg:p-6 overflow-y-auto w-full [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] flex flex-col items-center">
       <div className="w-full max-w-4xl space-y-8">
         {/* Preview Header */}
         <div className="flex items-center justify-between px-2">
