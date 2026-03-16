@@ -1,18 +1,26 @@
+import { useState } from "react";
+import { useForm } from "react-hook-form";
 import { useFormBuilder } from "../../../hooks/useFormBuilder";
-import { useFormSubmission } from "../hooks/useFormSubmission";
+import { SubmissionModal } from "../../../components/ui/SubmissionModal";
 
 import { EmptyCanvas, LiveForm } from "./preview";
 
 export function FormPreview() {
-  const { fields, addSubmission, webhookUrl, formName } = useFormBuilder();
+  const { fields, addSubmission, formName } = useFormBuilder();
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const { methods, handleSubmit, reset, watch } = useFormSubmission({
-    addSubmission,
-    webhookUrl,
+  const methods = useForm({
+    shouldUnregister: true,
   });
 
-  // Subscribe to all inputs for conditional logic evaluation
+  const { watch, reset, handleSubmit } = methods;
+
   const allValues = watch();
+
+  const onFormSubmit = handleSubmit((data) => {
+    addSubmission(data);
+    setIsModalOpen(true);
+  });
 
   return (
     <div className="h-full bg-zinc-50/80 p-4 lg:p-6 overflow-y-auto w-full [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] flex flex-col items-center">
@@ -48,7 +56,7 @@ export function FormPreview() {
               <LiveForm
                 fields={fields}
                 methods={methods}
-                handleSubmit={handleSubmit}
+                handleSubmit={onFormSubmit}
                 reset={reset}
                 allValues={allValues}
               />
@@ -60,6 +68,8 @@ export function FormPreview() {
         <p className="text-center text-zinc-400 text-sm">
           Interactive preview. All changes are reflected in real-time.
         </p>
+
+        <SubmissionModal open={isModalOpen} onOpenChange={setIsModalOpen} />
       </div>
     </div>
   );

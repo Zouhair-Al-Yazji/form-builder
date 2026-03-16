@@ -18,9 +18,8 @@ type FormBuilderContextType = {
   canUndo: boolean;
   canRedo: boolean;
 
-  submissions: Record<string, unknown>[];
+  submission: Record<string, unknown>;
   addSubmission: (data: Record<string, unknown>) => void;
-  clearSubmissions: () => void;
 
   webhookUrl: string;
   setWebhookUrl: (url: string) => void;
@@ -57,9 +56,10 @@ export function FormBuilderProvider({ children }: { children: ReactNode }) {
     canRedo,
   } = useHistory(localFields, setLocalFields);
 
-  const [submissions, setSubmissions] = useLocalStorage<
-    Record<string, unknown>[]
-  >(STORAGE_KEYS.SUBMISSIONS, []);
+  const [submission, setSubmission] = useLocalStorage<Record<string, unknown>>(
+    STORAGE_KEYS.SUBMISSIONS,
+    {},
+  );
   const [webhookUrl, setWebhookUrlState] = useLocalStorage<string>(
     STORAGE_KEYS.WEBHOOK,
     "",
@@ -140,11 +140,7 @@ export function FormBuilderProvider({ children }: { children: ReactNode }) {
   };
 
   const addSubmission = (data: Record<string, unknown>) => {
-    setSubmissions((prev) => [data, ...prev]);
-  };
-
-  const clearSubmissions = () => {
-    setSubmissions([]);
+    setSubmission(data);
   };
 
   const setWebhookUrl = (url: string) => {
@@ -176,9 +172,8 @@ export function FormBuilderProvider({ children }: { children: ReactNode }) {
         redo,
         canUndo,
         canRedo,
-        submissions,
+        submission,
         addSubmission,
-        clearSubmissions,
         webhookUrl,
         setWebhookUrl,
         formName,

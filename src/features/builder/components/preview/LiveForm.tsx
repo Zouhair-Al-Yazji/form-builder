@@ -1,4 +1,3 @@
-import { motion } from "motion/react";
 import {
   FormProvider,
   type UseFormReturn,
@@ -58,23 +57,14 @@ export function LiveForm({
               const span = widthMap[field.width] || 6;
 
               return (
-                <motion.div
-                  layout
+                <div
                   key={isInput ? `${field.id}-${field.name}` : field.id}
-                  initial={{ opacity: 0, y: 10, scale: 0.98 }}
-                  animate={{ opacity: 1, y: 0, scale: 1 }}
-                  exit={{
-                    opacity: 0,
-                    scale: 0.98,
-                    transition: { duration: 0.15 },
-                  }}
-                  transition={{ type: "spring", damping: 25, stiffness: 300 }}
                   style={{
                     gridColumn: `span ${span} / span ${span}`,
                   }}
                 >
                   <FieldRenderer field={field} />
-                </motion.div>
+                </div>
               );
             })}
           </form>
