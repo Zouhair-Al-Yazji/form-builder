@@ -1,73 +1,113 @@
-# React + TypeScript + Vite
+# Form Builder
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+![Form Builder](https://raw.githubusercontent.com/Zouhair-Al-Yazji/form-builder/main/public/og-image.png)
 
-Currently, two official plugins are available:
+**Form Builder** is a powerful, no-code visual builder for creating modern web forms. Built with **React 19**, **Tailwind CSS 4**, and **Base UI**, it allows developers and designers to visually compose forms and export clean, production-ready React code.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-## React Compiler
+## 🚀 Key Features
 
-The React Compiler is currently not compatible with SWC. See [this issue](https://github.com/vitejs/vite-plugin-react/issues/428) for tracking the progress.
+- 🏗 **Drag & Drop Interface** – Build complex forms visually without writing code.
+- ⚡ **Real-time Preview** – See exactly how your form behaves as you build it.
+- 💾 **Drafts & Templates** – Save your progress as drafts or start from pre-built templates.
+- 🕒 **Undo/Redo History** – Full history support to safely experiment with your designs.
+- 📤 **Code Export** – Export clean, typed React + Tailwind CSS components instantly.
+- 🔗 **Webhook Integration** – Easily connect your forms to any backend or automation tool.
+- 🪄 **Fluid Animations** – Powered by Framer Motion for a premium, interactive feel.
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## 🔗 Try It Out
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+👉 [Launch the Builder](https://form-builder-pink-eight.vercel.app)
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+---
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## 📣 Community & Feedback
+
+Have a suggestion, bug report, or feature idea?
+
+- 💬 [Submit Feedback](https://github.com/Zouhair-Al-Yazji/form-builder/discussions)
+- 🗳️ [Vote on Features](https://github.com/Zouhair-Al-Yazji/form-builder/discussions/categories/polls)
+
+---
+
+## 🛠 Tech Stack
+
+- **Core**: [React 19](https://react.dev/), [TypeScript](https://www.typescriptlang.org/)
+- **Components**: [@base-ui/react](https://base-ui.com/) (Unstyled, accessible primitives)
+- **Styling**: [Tailwind CSS 4](https://tailwindcss.com/)
+- **Animations**: [Framer Motion](https://www.framer.com/motion/)
+- **Icons**: [Tabler Icons](https://tabler.io/icons)
+- **Forms**: [React Hook Form](https://react-hook-form.com/)
+- **Notifications**: [Sonner](https://sonner.stevenlyui.com/)
+
+---
+
+## 🧩 Supported Fields
+
+- ✅ **Input** (Text, Email, Number, Password)
+- ✅ **Textarea** (Multi-line input)
+- ✅ **Select** (Dropdown menus)
+- ✅ **Radio Group** (Single choice)
+- ✅ **Checkbox & Switch** (Boolean inputs)
+- ✅ **Button** (Customizable actions)
+- ✅ **Heading & Separator** (Layout elements)
+
+---
+
+## 📦 Getting Started
+
+### Prerequisites
+
+- [Node.js](https://nodejs.org/) (Latest LTS)
+- [pnpm](https://pnpm.io/) (Recommended package manager)
+
+### Installation
+
+1. Clone the repository:
+
+   ```bash
+   git clone https://github.com/Zouhair-Al-Yazji/form-builder.git
+   ```
+
+2. Install dependencies:
+
+   ```bash
+   pnpm install
+   ```
+
+3. Start the development server:
+   ```bash
+   pnpm dev
+   ```
+
+### Building for Production
+
+```bash
+pnpm build
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+---
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## Contributing
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+I welcome contributions! Here's how you can help:
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+Please make sure to:
+
+- Follow the existing code style
+- Keep commits clean and descriptive
+
+---
+
+## 📄 License
+
+MIT License © 2025 [Zouhair Al Yazji](https://github.com/Zouhair-Al-Yazji)
