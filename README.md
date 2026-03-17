@@ -1,6 +1,6 @@
 # Form Builder
 
-![Form Builder](https://raw.githubusercontent.com/Zouhair-Al-Yazji/form-builder/main/public/preview.png)
+![Form Builder](https://raw.githubusercontent.com/Zouhair-Al-Yazji/form-builder/master/public/preview.png)
 
 **Form Builder** is a powerful, no-code visual builder for creating modern web forms. Built with **React 19**, **Tailwind CSS 4**, and **Base UI**, it allows developers and designers to visually compose forms and export clean, production-ready React code.
 
